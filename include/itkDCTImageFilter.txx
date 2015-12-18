@@ -62,7 +62,7 @@ DCTImageFilter< TInputImage, TOutputImage >
   fftw_r2r_kind kind[TInputImage::ImageDimension];
   int n[TInputImage::ImageDimension];
 	
-  for (int i = 0; i < TInputImage::ImageDimension; ++i) {
+  for (unsigned int i = 0; i < TInputImage::ImageDimension; ++i) {
   
     // Why is this backwards?  I thought that both c++ and fftw were row order.
     n[TInputImage::ImageDimension - 1 - i] = input->GetLargestPossibleRegion().GetSize()[i];
