@@ -20,6 +20,7 @@
 #include <string>
 #include <iostream>
 #include <cstdlib>
+#include <itkTestingMacros.h>
 
 int itkIndexValuePairTest( int argc, char **argv ) {
 
@@ -31,23 +32,41 @@ int itkIndexValuePairTest( int argc, char **argv ) {
 
   typedef itk::IndexValuePair< std::string, int > PairType;
 
-  PairType p1;
-  p1.Index = "index";
-  p1.Value = 0;
+  PairType p00, p01, p10, p11;
+  p00.SetIndex("0");
+  p00.SetValue(0);
 
-  PairType p2;
-  p2.Index = "index";
-  p1.Value = 1;
+  TEST_EXPECT_EQUAL(p00.GetIndex(),"0");
+  TEST_EXPECT_EQUAL(p00.GetValue(),0);
 
-  if (!(p1.Index == p2.Index)) {
-    std::cerr << "Failure on == operator test." << std::endl;
-    return EXIT_FAILURE;
-  }
-  
-  if (!(p1.Value < p2.Value)) {
-    std::cerr << "Failure on < operator test." << std::endl;
-    return EXIT_FAILURE;
-  }
+  p01.SetIndex("0");
+  p01.SetValue(1);
+
+  p10.SetIndex("1");
+  p10.SetValue(0);
+
+  p11.SetIndex("1");
+  p11.SetValue(1);
+
+  TEST_EXPECT_TRUE(p00 == p01);
+  TEST_EXPECT_TRUE(p10 == p11);
+
+//  PairType p2;
+//  p2.SetIndex("index");
+//  p1.SetValue(1      );
+//
+//  TEST_EXPECT_EQUAL(p1.GetIndex(), p2.GetIndex());
+//
+//  if (!(p1.GetIndex() == p2.GetIndex())) {
+//    std::cerr << "Failure on == operator test." << std::endl;
+//    return EXIT_FAILURE;
+//  }
+//  
+//  if (!(p1.GetValue() < p2.GetValue())) {
+//    std::cerr << "Failure on < operator test." << std::endl;
+//    return EXIT_FAILURE;
+//  }
+
 
   return EXIT_SUCCESS;
 }

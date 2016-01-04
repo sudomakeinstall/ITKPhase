@@ -37,22 +37,42 @@ class IndexValuePair
 
 public:
 
-  TIndex m_Index;
-  TValue m_Value;
-  
+  void SetIndex(TIndex index)
+    {
+    this->m_Index = index;
+    }
+  TIndex GetIndex() const
+    {
+    return this->m_Index;
+    }
+
+  void SetValue(TValue value)
+    {
+    this->m_Value = value;
+    }
+  TValue GetValue() const
+    {
+    return this->m_Value;
+    }
+
   /** Compare two points for equality. */
   bool
   operator==(const IndexValuePair & pt) const
   {
-    return m_Index == pt.Index;
+    return this->m_Index == pt.GetIndex();
   }
-  
+
   /** Less than. */
   bool
   operator<(const IndexValuePair & pt) const
   {
-    return m_Value < pt.Value;
+    return this->m_Value < pt.GetValue();
   }
+
+private:
+
+  TIndex m_Index;
+  TValue m_Value;
 
 };
 
