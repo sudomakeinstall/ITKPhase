@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkDCTPoissonSolverImageFilter_txx
-#define __itkDCTPoissonSolverImageFilter_txx
+#ifndef itkDCTPoissonSolverImageFilter_hxx
+#define itkDCTPoissonSolverImageFilter_hxx
 
 #include "itkDCTPoissonSolverImageFilter.h"
 
@@ -46,7 +46,7 @@ DCTPoissonSolverImageFilter< TInputImage, TOutputImage >
   // Calculate the forward DCT
   m_DCT_Forward->SetInput( input );
   m_DCT_Forward->Update();
-	
+
   // Save the transformed data to an image for iteration 
   typename TInputImage::Pointer transformed = m_DCT_Forward->GetOutput();
   transformed ->Update();
@@ -63,22 +63,23 @@ DCTPoissonSolverImageFilter< TInputImage, TOutputImage >
   while (!it.IsAtEnd() ) {
 
     typename TInputImage::PixelType var = -2*TInputImage::ImageDimension;
-		
-	for (unsigned int i = 0; i < TInputImage::ImageDimension; ++i) {
-		var += 2*cos(vnl_math::pi*(it.GetIndex()[i] - index[i]) / size[i]);
-	} // 5.60, p.200
-	
+
+    for (unsigned int i = 0; i < TInputImage::ImageDimension; ++i)
+      {
+      var += 2*cos(vnl_math::pi*(it.GetIndex()[i] - index[i]) / size[i]);
+      } // 5.60, p.200
+
     it.Value() /= var; // Divide by the result
-		
+
     ++it;
 
   }
-	
+
   // Set the zero index to "0"
   typename TInputImage::IndexType zeroIndex;
   zeroIndex.Fill( 0 );
   transformed->SetPixel( zeroIndex, 0 );
-	
+
   // Take the inverse DCT
   m_DCT_Inverse->SetInput( transformed );
   m_DCT_Inverse->Update();
@@ -101,4 +102,4 @@ DCTPoissonSolverImageFilter< TInputImage, TOutputImage >
 
 } /* end namespace itk */
 
-#endif // __itkDCTPhaseUnwrapImageFilter_txx
+#endif

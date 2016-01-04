@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkPhaseExamplesImageSource_txx
-#define __itkPhaseExamplesImageSource_txx
+#ifndef itkPhaseExamplesImageSource_hxx
+#define itkPhaseExamplesImageSource_hxx
 
 #include "itkPhaseExamplesImageSource.h"
  
@@ -73,35 +73,32 @@ PhaseExamplesImageSource< TImage >
   
   }
   
-  if (m_Shear) {
+  if (m_Shear)
+    {
   
     size[1] = 64;
-	region.SetSize( size );
-	
-	index[1] = 96;
-	region.SetIndex( index );
-	
-	ItType it2( phase, region );
-	
-	it2.GoToBegin();
-	
-	while( !it2.IsAtEnd() ) {
-	
-		it2.Value() *= -1;
-	
-		++it2;
-	
-	}
+    region.SetSize( size );
+
+    index[1] = 96;
+    region.SetIndex( index );
+
+    ItType it2( phase, region );
+
+    for (it2.GoToBegin(); !it2.IsAtEnd(); ++it2)
+      {
+      it2.Value() *= -1;
+      }
+
+    }
   
-  }
-  
-  if (m_Noise) {
+  if (m_Noise)
+    {
    
     index.Fill( 64 );
     size.Fill( 64 );
     
     typename TImage::RegionType noiseRegion( index, size );
-	
+
     m_ROIFilter = ROIType::New();
     m_ROIFilter->SetInput( phase );
     m_ROIFilter->SetRegionOfInterest( noiseRegion );
@@ -122,9 +119,10 @@ PhaseExamplesImageSource< TImage >
 
     this->GraftOutput( m_PasteFilter->GetOutput() );
 
-  }
+    }
   
-  if (m_Wrap) {
+  if (m_Wrap)
+    {
   
     m_WrapFilter = WrapType::New();
     m_WrapFilter->SetInput( this->GetOutput() );
@@ -132,7 +130,7 @@ PhaseExamplesImageSource< TImage >
     
     this->GraftOutput( m_WrapFilter->GetOutput() );
   
-  }
+    }
  
 }
 

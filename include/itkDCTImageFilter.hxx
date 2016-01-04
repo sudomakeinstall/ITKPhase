@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkDCTImageFilter_txx
-#define __itkDCTImageFilter_txx
+#ifndef itkDCTImageFilter_hxx
+#define itkDCTImageFilter_hxx
 
 #include "itkDCTImageFilter.h"
 
@@ -51,17 +51,17 @@ DCTImageFilter< TInputImage, TOutputImage >
   output->Allocate();
   
   typename TInputImage::SizeValueType numpix = input->GetLargestPossibleRegion().GetNumberOfPixels();
-	
+
   typename TInputImage::PixelType *in, *out;
   in = (typename TInputImage::PixelType*) fftw_malloc(sizeof(typename TInputImage::PixelType) * numpix);
   out = (typename TInputImage::PixelType*) fftw_malloc(sizeof(typename TInputImage::PixelType) * numpix);
-	
+
   in = (typename TInputImage::PixelType*)input->GetBufferPointer();
   out = (typename TInputImage::PixelType*)output->GetBufferPointer();
-	
+
   fftw_r2r_kind kind[TInputImage::ImageDimension];
   int n[TInputImage::ImageDimension];
-	
+
   for (unsigned int i = 0; i < TInputImage::ImageDimension; ++i) {
   
     // Why is this backwards?  I thought that both c++ and fftw were row order.
@@ -77,14 +77,14 @@ DCTImageFilter< TInputImage, TOutputImage >
     }
 
   }
-	
+
   fftw_plan p = fftw_plan_r2r( TInputImage::ImageDimension, // rank
-	                          n, // pointer to array of rank integers
-	                          in,
-	                          out,
-	                          kind,
-	                          FFTW_ESTIMATE);
-  fftw_execute(p);    	
+                               n, // pointer to array of rank integers
+                               in,
+                               out,
+                               kind,
+                               FFTW_ESTIMATE);
+  fftw_execute(p);
   fftw_destroy_plan(p);
   
   if (Reverse == m_TransformDirection) {
@@ -97,7 +97,7 @@ DCTImageFilter< TInputImage, TOutputImage >
     this->GetOutput()->Graft( m_Divide->GetOutput() );
     
   }
-	
+
 } 
 
 //  PrintSelf method prints parameters 
@@ -116,4 +116,4 @@ DCTImageFilter< TInputImage, TOutputImage >
 
 } /* end namespace itk */ 
 
-#endif // __itkDCTImageFilter_txx
+#endif

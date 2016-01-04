@@ -1,4 +1,4 @@
-/**=========================================================================
+/*=========================================================================
  *
  *  Copyright Insight Software Consortium
  *
@@ -15,12 +15,13 @@
  *  limitations under the License.
  *
  * =========================================================================*/
-#ifndef __itkIndexValuePair_h
-#define __itkIndexValuePair_h
+#ifndef itkIndexValuePair_h
+#define itkIndexValuePair_h
 
 namespace itk
 {
 /** \class IndexValuePair
+ *  \ingroup ITKPhase
  * \brief A templated class containing an index-value pair, where equality is
  * determined based on index and < comparison is determined based on value.
  *
@@ -36,21 +37,21 @@ class IndexValuePair
 
 public:
 
-  TIndex Index;
-  TValue Value;
+  TIndex m_Index;
+  TValue m_Value;
   
   /** Compare two points for equality. */
   bool
   operator==(const IndexValuePair & pt) const
   {
-    return Index == pt.Index;
+    return m_Index == pt.Index;
   }
   
   /** Less than. */
   bool
   operator<(const IndexValuePair & pt) const
   {
-    return Value < pt.Value;
+    return m_Value < pt.Value;
   }
 
 };

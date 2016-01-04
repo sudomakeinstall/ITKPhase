@@ -15,8 +15,9 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkPhaseResidueImageFilter_h
-#define __itkPhaseResidueImageFilter_h
+
+#ifndef itkPhaseResidueImageFilter_h
+#define itkPhaseResidueImageFilter_h
  
 #include "itkPhaseImageToImageFilter.h"
 #include "itkObjectFactory.h"
@@ -26,7 +27,8 @@
 namespace itk
 {
 /** \class PhaseResidueImageFilter
- * \brief Calculates phase residues for each pixel in an image.  Only meaningful for 2D images.
+ *  \ingroup ITKPhase
+ *  \brief Calculates phase residues for each pixel in an image.  Only meaningful for 2D images.
  *
  * This filter assumes a phase image wrapped into the range of -pi to pi as input and
  * calculates phase residues for each pixel in the image.
@@ -99,7 +101,7 @@ private:
 } //namespace ITK
  
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkPhaseResidueImageFilter.txx"
+#include "itkPhaseResidueImageFilter.hxx"
 #endif
  
 #endif

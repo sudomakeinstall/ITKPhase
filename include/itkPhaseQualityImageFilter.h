@@ -15,8 +15,9 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkPhaseQualityImageFilter_h
-#define __itkPhaseQualityImageFilter_h
+
+#ifndef itkPhaseQualityImageFilter_h
+#define itkPhaseQualityImageFilter_h
  
 #include "itkObjectFactory.h"
 #include "itkMultiplyImageFilter.h"
@@ -27,6 +28,7 @@
 namespace itk
 {
 /** \class PhaseQualityImageFilter
+ *  \ingroup ITKPhase
  * \brief This class handels rescaling and thresholding of a variety of phase quality metrics.
  *
  * Many metrics for phase quality have been proposed, such as phase derivative variance,
@@ -115,7 +117,7 @@ private:
 } //namespace ITK
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkPhaseQualityImageFilter.txx"
+#include "itkPhaseQualityImageFilter.hxx"
 #endif
  
 #endif

@@ -16,8 +16,8 @@
  *
  *=========================================================================*/
 
-#ifndef __itkDCTImageFilter_h 
-#define __itkDCTImageFilter_h 
+#ifndef itkDCTImageFilter_h 
+#define itkDCTImageFilter_h 
 
 #include "itkFFTWGlobalConfiguration.h"
 #ifndef ITK_USE_FFTWD
@@ -33,6 +33,7 @@
 namespace itk {
 
 /** \class DCTImageFilter
+ *  \ingroup ITKPhase
  * \brief Calculates discrete cosine transform of an image.
  *
  * This class makes use of the FFTW library's real to real transform.
@@ -63,7 +64,7 @@ public:
   typedef ImageToImageFilter< TInputImage, TOutputImage > Superclass; 
   typedef SmartPointer<Self>                              Pointer; 
   typedef SmartPointer<const Self>                        ConstPointer; 
-	
+
   // Transform DIRECTION
   typedef  enum { Forward=0, Reverse=1 } TransformDirectionEnumType;
   
@@ -82,10 +83,10 @@ public:
   
   itkSetMacro(TransformDirection, TransformDirectionEnumType);
   itkGetConstMacro(TransformDirection, TransformDirectionEnumType);
-	
+
   /** Method for creation through object factory */
   itkNewMacro(Self);
-	
+
   /** Run-time type information */
   itkTypeMacro(DCTImageFilter, ImageToImageFilter);
 
@@ -96,10 +97,10 @@ protected:
 
   DCTImageFilter();
   ~DCTImageFilter(){}
-	
+
   // Transform DIRECTION
   TransformDirectionEnumType m_TransformDirection;
-	
+
   //  Declare the component filter types:
   typedef DivideImageFilter< TInputImage, TInputImage, TInputImage > DivideType;
         
@@ -119,7 +120,7 @@ private:
 }
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkDCTImageFilter.txx"
+#include "itkDCTImageFilter.hxx"
 #endif
 
-#endif // __itkDCTImageFilter_h
+#endif

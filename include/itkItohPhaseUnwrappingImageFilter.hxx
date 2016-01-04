@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkItohPhaseUnwrappingImageFilter_txx
-#define __itkItohPhaseUnwrappingImageFilter_txx
+#ifndef itkItohPhaseUnwrappingImageFilter_hxx
+#define itkItohPhaseUnwrappingImageFilter_hxx
  
 namespace itk {
 

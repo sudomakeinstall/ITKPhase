@@ -15,8 +15,9 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkDCTPoissonSolverImageFilter_h
-#define __itkDCTPoissonSolverImageFilter_h
+
+#ifndef itkDCTPoissonSolverImageFilter_h
+#define itkDCTPoissonSolverImageFilter_h
 
 #include "itkImageToImageFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"
@@ -25,6 +26,7 @@
 namespace itk {
 
 /** \class DCTPoissonSolverImageFilter
+ *  \ingroup ITKPhase
  * \brief Solves the Poisson equation on a Laplacian image using the discrete cosine transform.
  *
  * The Laplacian (second-difference) image can be calculated using itkLaplacianImageFilter.h
@@ -44,7 +46,7 @@ public:
 //  Standard declarations
 //  Used for object creation with the object factory:
 
-  typedef DCTPoissonSolverImageFilter                      Self;
+  typedef DCTPoissonSolverImageFilter                     Self;
   typedef ImageToImageFilter< TInputImage, TOutputImage > Superclass;
   typedef SmartPointer<Self>                              Pointer;
   typedef SmartPointer<const Self>                        ConstPointer;
@@ -64,7 +66,7 @@ public:
   
   /** Method for creation through object factory */
   itkNewMacro(Self);
-  	
+ 
   /** Run-time type information */
   itkTypeMacro(DCTPoissonSolverImageFilter, ImageToImageFilter);
 
@@ -97,7 +99,7 @@ private:
 }
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkDCTPoissonSolverImageFilter.txx"
+#include "itkDCTPoissonSolverImageFilter.hxx"
 #endif
 
-#endif // __itkDCTPoissonSolverImageFilter_h
+#endif

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkPhaseDerivativeVarianceImageFilter_txx
-#define __itkPhaseDerivativeVarianceImageFilter_txx
+#ifndef itkPhaseDerivativeVarianceImageFilter_hxx
+#define itkPhaseDerivativeVarianceImageFilter_hxx
  
 namespace itk {
 
@@ -53,43 +53,43 @@ PhaseDerivativeVarianceImageFilter< TInputImage, TOutputImage >
   radius.Fill( 1 );
   ItType outputIt( output, output->GetLargestPossibleRegion() );
   NVItType nGradIt( radius, grad, output->GetLargestPossibleRegion() );
-	
+
   outputIt.GoToBegin();
   nGradIt.GoToBegin();
-	
+
   while( !outputIt.IsAtEnd() ) {
-		
+
     // by default, valarray is filled with zeros
     std::valarray< double > means((unsigned int)TInputImage::ImageDimension);
 
     for (unsigned int ii = 0; ii < TInputImage::ImageDimension; ++ii) {
-			
+
       means[ii] = nGradIt.GetPrevious( ii )[ii];
       means[ii] += nGradIt.GetCenterPixel()[ii];
       means[ii] += nGradIt.GetNext( ii )[ii];
-			
+
     }
-		
+
     means /= (double) nGradIt.Size();
-		
+
     // fill sums with default zero value
     std::valarray< double > sums((unsigned int)TInputImage::ImageDimension);
-		
+
     // Squared differences from the mean
     for (unsigned int ii = 0; ii < TInputImage::ImageDimension; ++ii) {
-		
+
       sums[ii] = pow(nGradIt.GetPrevious( ii )[ii] - means[ii], 2);
       sums[ii] += pow(nGradIt.GetCenterPixel()[ii] - means[ii], 2);
       sums[ii] += pow(nGradIt.GetNext( ii )[ii] - means[ii], 2);
-	
+
     }
-	
-	// Check this one more time
+
+// Check this one more time
     outputIt.Set( pow(sums, 0.5).sum() / pow(nGradIt.Size(), 2) );
     
     ++outputIt;
     ++nGradIt;
-	
+
   }
 
   this->GraftOutput( output );

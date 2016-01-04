@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkPhaseResidueImageFilter_txx
-#define __itkPhaseResidueImageFilter_txx
+#ifndef itkPhaseResidueImageFilter_hxx
+#define itkPhaseResidueImageFilter_hxx
  
 namespace itk {
 
@@ -50,19 +50,19 @@ void PhaseResidueImageFilter< TInputImage, TOutputImage >
   
   inIt.GoToBegin();
   outIt.GoToBegin();
-	
+
   typename ConstItType::OffsetType UL = {{0, 0}};
   typename ConstItType::OffsetType UR = {{1, 0}};
   typename ConstItType::OffsetType LL = {{0, 1}};
   typename ConstItType::OffsetType LR = {{1, 1}};
-	
+
   while( !inIt.IsAtEnd() ) {
 
     double d1 = this->Wrap( inIt.GetPixel(LL) - inIt.GetPixel(UL) );
     double d2 = this->Wrap( inIt.GetPixel(LR) - inIt.GetPixel(LL) );
     double d3 = this->Wrap( inIt.GetPixel(UR) - inIt.GetPixel(LR) );
     double d4 = this->Wrap( inIt.GetPixel(UL) - inIt.GetPixel(UR) );
-		
+
     double sum = d1 + d2 + d3 + d4;
     
     if (sum < -1) {
@@ -78,12 +78,12 @@ void PhaseResidueImageFilter< TInputImage, TOutputImage >
       sum = 1;
       
     }
-		
+
     outIt.Set( sum );
-		
+
     ++inIt;
     ++outIt;
-	
+
   }
  
 }

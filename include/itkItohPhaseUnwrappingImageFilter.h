@@ -15,8 +15,9 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkItohPhaseUnwrappingImageFilter_h
-#define __itkItohPhaseUnwrappingImageFilter_h
+
+#ifndef itkItohPhaseUnwrappingImageFilter_h
+#define itkItohPhaseUnwrappingImageFilter_h
  
 #include "itkPhaseImageToImageFilter.h"
 #include "itkObjectFactory.h"
@@ -27,6 +28,7 @@
 namespace itk
 {
 /** \class ItohPhaseUnwrappingImageFilter
+ *  \ingroup ITKPhase
  * \brief Unwraps a wrapped phase image using the Itoh algorithm.
  *
  * This filter assumes a phase image wrapped into the range of -pi to pi as input and
@@ -62,10 +64,10 @@ protected:
 
   ItohPhaseUnwrappingImageFilter();
   ~ItohPhaseUnwrappingImageFilter(){}
-  	
+ 
   typedef ImageLinearConstIteratorWithIndex< TInputImage > InItType;
-  typedef ImageLinearIteratorWithIndex< TOutputImage > OutItType;
-  	
+  typedef ImageLinearIteratorWithIndex< TOutputImage >     OutItType;
+
   unsigned int m_Direction;
  
   /** Does the real work. */
@@ -80,7 +82,7 @@ private:
 } //namespace ITK
  
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkItohPhaseUnwrappingImageFilter.txx"
+#include "itkItohPhaseUnwrappingImageFilter.hxx"
 #endif
  
 #endif

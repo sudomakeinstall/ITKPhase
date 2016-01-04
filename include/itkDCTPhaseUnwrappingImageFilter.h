@@ -15,8 +15,9 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkDCTPhaseUnwrappingImageFilter_h
-#define __itkDCTPhaseUnwrappingImageFilter_h
+
+#ifndef itkDCTPhaseUnwrappingImageFilter_h
+#define itkDCTPhaseUnwrappingImageFilter_h
 
 #include "itkPhaseImageToImageFilter.h"
 #include "itkWrappedPhaseLaplacianImageFilter.h"
@@ -27,6 +28,7 @@
 namespace itk {
 
 /** \class DCTPhaseUnwrappingImageFilter
+ *  \ingroup ITKPhase
  * \brief Calculates calculates the L2-norm unwrapped phase.
  *
  * This filter uses the discrete cosine transform to calculate the L2-norm
@@ -56,16 +58,16 @@ public:
                    ( Concept::SameDimension< TInputImage::ImageDimension, TOutputImage::ImageDimension > ) );
   
   itkConceptMacro( InputFloatingPointCheck,
-                   ( Concept::IsFloatingPoint< typename TInputImage::PixelType > ) );
+                 ( Concept::IsFloatingPoint< typename TInputImage::PixelType > ) );
                    
   itkConceptMacro( OutputFloatingPointCheck,
-                   ( Concept::IsFloatingPoint< typename TOutputImage::PixelType > ) );
+                 ( Concept::IsFloatingPoint< typename TOutputImage::PixelType > ) );
   // End concept checking
   #endif
   
   /** Method for creation through object factory */
   itkNewMacro(Self);
-  	
+  
   /** Run-time type information */
   itkTypeMacro(DCTPhaseUnwrappingImageFilter, PhaseImageToImageFilter);
 
@@ -100,7 +102,7 @@ private:
 }
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkDCTPhaseUnwrappingImageFilter.txx"
+#include "itkDCTPhaseUnwrappingImageFilter.hxx"
 #endif
 
-#endif // __itkDCTPhaseUnwrappingImageFilter_h
+#endif

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkDCTPhaseUnwrappingImageFilter_txx
-#define __itkDCTPhaseUnwrappingImageFilter_txx
+#ifndef itkDCTPhaseUnwrappingImageFilter_hxx
+#define itkDCTPhaseUnwrappingImageFilter_hxx
 
 #include "itkDCTPhaseUnwrappingImageFilter.h"
 
@@ -75,4 +75,4 @@ DCTPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
 
 } /* end namespace itk */
 
-#endif // __itkDCTPhaseUnwrapImageFilter_txx
+#endif

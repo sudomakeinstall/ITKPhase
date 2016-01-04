@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkWrapPhaseFunctor_h
-#define __itkWrapPhaseFunctor_h
+#ifndef itkWrapPhaseFunctor_h
+#define itkWrapPhaseFunctor_h
 
 #include <math.h>
 
@@ -25,6 +25,7 @@ namespace itk
 namespace Functor
 {
 /** \class WrapPhaseFunctor
+ *  \ingroup ITKPhase
  *  \brief Unary functor that wraps the input value into the range -pi to pi.
  *
  * This functor is used by WrapPhaseImageFilter as well as filters that inherit

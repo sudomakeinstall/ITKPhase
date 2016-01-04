@@ -15,8 +15,9 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkHelmholtzDecompositionImageFilter_h
-#define __itkHelmholtzDecompositionImageFilter_h
+
+#ifndef itkHelmholtzDecompositionImageFilter_h
+#define itkHelmholtzDecompositionImageFilter_h
 
 /** ITK headers */
 #include "itkObjectFactory.h"
@@ -30,6 +31,7 @@
 namespace itk {
 
 /** \class HelmholtzDecompositionImageFilter
+ *  \ingroup ITKPhase
  * \brief Decomposes a wrapped phase image into its rotational (curl) and irrotational
  * (divergence) components.
  *
@@ -46,10 +48,10 @@ public PhaseImageToImageFilter< TInputImage, TOutputImage >
 public:
 
   /** Standard class typedefs. */
-  typedef HelmholtzDecompositionImageFilter	               Self;
+  typedef HelmholtzDecompositionImageFilter                    Self;
   typedef PhaseImageToImageFilter< TInputImage, TOutputImage > Superclass;
-  typedef SmartPointer< Self >                 	               Pointer;
-  typedef SmartPointer< const Self >           	               ConstPointer;
+  typedef SmartPointer< Self >                                 Pointer;
+  typedef SmartPointer< const Self >                           ConstPointer;
   
   #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -69,10 +71,10 @@ public:
  
   /** Run-time type information (and related methods). */
   itkTypeMacro(HelmholtzDecompositionImageFilter, PhaseImageToImageFilter);
-	
+
   /** Use this to retrieve the phase quality map. */
   TOutputImage* GetIrrotational();
-	
+
   /** Use this to retrieve the unwrapped phase. */
   TOutputImage* GetRotational();
   
@@ -80,13 +82,13 @@ public:
   void PrintSelf( std::ostream& os, Indent indent ) const;
  
 protected:
-	
+
   HelmholtzDecompositionImageFilter();
   ~HelmholtzDecompositionImageFilter(){}
-	
+
   /** Does the real work. */
   virtual void GenerateData();
-	
+
   /** Declare component filter types */
   typedef DCTPhaseUnwrappingImageFilter< TInputImage > UnwrapType;
   typedef SubtractImageFilter< TInputImage >           SubtractType;
@@ -101,17 +103,17 @@ private:
   void operator=(const Self &);  //purposely not implemented
   
   /** Instantiate component filters */
-  typename UnwrapType::Pointer m_Unwrap;
+  typename UnwrapType::Pointer   m_Unwrap;
   typename SubtractType::Pointer m_Subtract;
-  typename WrapType::Pointer m_WrapIrrot;
-  typename WrapType::Pointer m_WrapRot;
+  typename WrapType::Pointer     m_WrapIrrot;
+  typename WrapType::Pointer     m_WrapRot;
  
 };
 
 } //namespace ITK
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkHelmholtzDecompositionImageFilter.txx"
+#include "itkHelmholtzDecompositionImageFilter.hxx"
 #endif
  
 #endif

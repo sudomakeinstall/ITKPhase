@@ -15,8 +15,9 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkWrapPhaseImageFilter_h
-#define __itkWrapPhaseImageFilter_h
+
+#ifndef itkWrapPhaseImageFilter_h
+#define itkWrapPhaseImageFilter_h
 
 #include "itkUnaryFunctorImageFilter.h"
 #include "itkWrapPhaseFunctor.h"
@@ -25,7 +26,7 @@ namespace itk
 {
 
 /** \class WrapPhaseImageFilter
- *
+ *  \ingroup ITKPhase
  * \brief Wraps the input image into the range -pi to pi.
  *
  * Applies the following operation, pixelwise across the image: atan2(sin(x), cos(x)).

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkHelmholtzDecompositionImageFilter_txx
-#define __itkHelmholtzDecompositionImageFilter_txx
+#ifndef itkHelmholtzDecompositionImageFilter_hxx
+#define itkHelmholtzDecompositionImageFilter_hxx
 
 #include "itkHelmholtzDecompositionImageFilter.h"
  
@@ -31,7 +31,7 @@ HelmholtzDecompositionImageFilter< TInputImage, TOutputImage >
   
   this->SetNthOutput( 0, this->MakeOutput(0) ); // GetIrrotational()
   this->SetNthOutput( 1, this->MakeOutput(1) ); // GetRotational()
-	
+
   /** There is one required input for this filter. */
   this->SetNumberOfRequiredInputs(1);
 }
@@ -80,7 +80,7 @@ void
 HelmholtzDecompositionImageFilter< TInputImage, TOutputImage >
 ::GenerateData()
 {
-	
+
   m_Unwrap = UnwrapType::New();
   m_WrapIrrot = WrapType::New();
   m_Subtract = SubtractType::New();
@@ -118,4 +118,4 @@ HelmholtzDecompositionImageFilter< TInputImage, TOutputImage >
  
 } // end namespace itk
  
-#endif // DV_HelmholtzDecompositionImageFilter_H
+#endif

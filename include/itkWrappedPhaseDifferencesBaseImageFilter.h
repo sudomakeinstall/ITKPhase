@@ -15,9 +15,9 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkWrappedPhaseDifferencesBaseImageFilter_h
-#define __itkWrappedPhaseDifferencesBaseImageFilter_h
- 
+
+#ifndef itkWrappedPhaseDifferencesBaseImageFilter_h
+#define itkWrappedPhaseDifferencesBaseImageFilter_h
 
 #include "itkObjectFactory.h"
 #include "itkCyclicShiftImageFilter.h"
@@ -33,6 +33,7 @@
 namespace itk
 {
 /** \class WrappedPhaseDifferencesBaseImageFilter
+ *  \ingroup ITKPhase
  * \brief Base class for images dealing with wrapped phase derivatives.
  *
  * Provides useful methods for dealing with wrapped phase differences.  The
@@ -73,22 +74,22 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(WrappedPhaseDifferencesBaseImageFilter, PhaseImageToImageFilter);
   
-  typedef CovariantVector< typename TInputImage::PixelType, TInputImage::ImageDimension > TVector;
-  typedef Image< TVector, TInputImage::ImageDimension >          TVectorImage;
-  typedef typename TVectorImage::Pointer TVectorPointer;
+  typedef CovariantVector< typename TInputImage::PixelType,
+                           TInputImage::ImageDimension >    TVector;
+  typedef Image< TVector, TInputImage::ImageDimension >     TVectorImage;
+  typedef typename TVectorImage::Pointer                    TVectorPointer;
  
 protected:
 
   WrappedPhaseDifferencesBaseImageFilter();
   ~WrappedPhaseDifferencesBaseImageFilter(){}
-	
+
   // Declare the component filter types:
-  typedef CyclicShiftImageFilter< TInputImage >           ShiftType;
-  typedef SubtractImageFilter< TInputImage, TInputImage > SubtractType;
-  typedef WrapPhaseImageFilter< TInputImage, TInputImage >             WrapType;
-  typedef ImageRegionIterator< TInputImage >              ItType;
-  
-  typedef ComposeImageFilter< TInputImage, TVectorImage > ComposeType;
+  typedef CyclicShiftImageFilter< TInputImage >            ShiftType;
+  typedef SubtractImageFilter< TInputImage, TInputImage >  SubtractType;
+  typedef WrapPhaseImageFilter< TInputImage, TInputImage > WrapType;
+  typedef ImageRegionIterator< TInputImage >               ItType;
+  typedef ComposeImageFilter< TInputImage, TVectorImage >  ComposeType;
  
   typename TInputImage::Pointer DirectionalDerivative(unsigned int i);
   TVectorPointer ComposeVector();
@@ -103,7 +104,7 @@ private:
 } //namespace ITK
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkWrappedPhaseDifferencesBaseImageFilter.txx"
+#include "itkWrappedPhaseDifferencesBaseImageFilter.hxx"
 #endif
  
 #endif

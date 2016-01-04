@@ -15,8 +15,9 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkPhaseImageToImageFilter_h
-#define __itkPhaseImageToImageFilter_h
+
+#ifndef itkPhaseImageToImageFilter_h
+#define itkPhaseImageToImageFilter_h
  
 #include "itkImageToImageFilter.h"
 #include "itkObjectFactory.h"
@@ -26,6 +27,7 @@
 namespace itk
 {
 /** \class PhaseImageToImageFilter
+ *  \ingroup ITKPhase
  * \brief Base class for filters dealing with phase data.
  *
  * Provides useful methods for dealing with phase, such as pixelwise wrapping and unwrapping.
@@ -79,7 +81,7 @@ private:
 } //namespace ITK
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkPhaseImageToImageFilter.txx"
+#include "itkPhaseImageToImageFilter.hxx"
 #endif
 
 #endif

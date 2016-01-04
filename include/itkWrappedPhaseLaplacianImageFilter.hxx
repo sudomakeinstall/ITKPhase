@@ -15,18 +15,18 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkWrappedPhaseLaplacianImageFilter_txx
-#define __itkWrappedPhaseLaplacianImageFilter_txx
- 
+#ifndef itkWrappedPhaseLaplacianImageFilter_hxx
+#define itkWrappedPhaseLaplacianImageFilter_hxx
+
 namespace itk {
 
 template< typename TInputImage, typename TOutputImage >
 WrappedPhaseLaplacianImageFilter< TInputImage, TOutputImage >
-::WrappedPhaseLaplacianImageFilter() 
+::WrappedPhaseLaplacianImageFilter()
 {
-  
+
   // Set Defaults
-  m_Weighted = false; 
+  m_Weighted = false;
 
 }
 
@@ -35,13 +35,13 @@ void
 WrappedPhaseLaplacianImageFilter< TInputImage, TOutputImage >
 ::GenerateData()
 {
-  
+
   typename TInputImage::ConstPointer input = this->GetInput();
   typename TInputImage::Pointer output = this->GetOutput();
   output->SetRegions( input->GetLargestPossibleRegion() );
   output->Allocate();
   output->FillBuffer( 0 );
-  
+
   this->AllocateOutputs();
 
   m_Qual = QualType::New();
@@ -50,79 +50,84 @@ WrappedPhaseLaplacianImageFilter< TInputImage, TOutputImage >
 
   typename CNItType::RadiusType radius;
   radius.Fill( 1 );
-  
+
   CNItType inIt( radius, input, input->GetLargestPossibleRegion() );
   CNItType qualIt( radius, m_Qual->GetOutput(), input->GetLargestPossibleRegion() );
   ItType outIt( output, input->GetLargestPossibleRegion() );
   inIt.GoToBegin();
   qualIt.GoToBegin();
   outIt.GoToBegin();
-  
+
   // p. 368-9
   typename CNItType::SizeValueType k = inIt.Size() / 2;
   typename CNItType::SizeValueType k1, k2;
   double w1, w2;
   w1 = w2 = 1;
- 
+
   while( !inIt.IsAtEnd() ) {
-   
+
     for (unsigned int i = 0; i < TInputImage::ImageDimension; ++i) {
-     
+
       typename TInputImage::IndexType::IndexValueType leftIndex;
       leftIndex = input->GetLargestPossibleRegion().GetIndex()[i];
       typename TInputImage::IndexType::IndexValueType rightIndex;
       rightIndex = leftIndex + input->GetLargestPossibleRegion().GetSize()[i];
-       
+
      // if (inIt.GetIndex()[i] < input->GetLargestPossibleRegion().GetSize()[i] - 1) {
-      if (inIt.GetIndex()[i] < rightIndex - 1) {
+      if (inIt.GetIndex()[i] < rightIndex - 1)
+        {
         k1 = k + inIt.GetStride( i );
-      } else {
+        }
+      else
+        {
         k1 = k - inIt.GetStride( i );
-      }
+        }
 
      // if (inIt.GetIndex()[i] > 0) {
-      if (inIt.GetIndex()[i] > leftIndex) {
+      if (inIt.GetIndex()[i] > leftIndex)
+        {
         k2 = k - inIt.GetStride( i );
-      } else {
+        }
+      else
+        {
         k2 = k + inIt.GetStride( i );
-      }
-      
-      if (m_Weighted) {
-    
+        }
+
+      if (m_Weighted)
+        {
         w1 = qualIt.GetPixel( k1 );
         w2 = qualIt.GetPixel( k2 );
-          
+
         double wCenter = qualIt.GetCenterPixel();
         w1 = (wCenter*wCenter < w1*w1) ? wCenter*wCenter : w1*w1;
         w2 = (wCenter*wCenter < w2*w2) ? wCenter*wCenter : w2*w2;
+        }
 
-      }      
-    
       outIt.Value() += w1*this->Wrap(inIt.GetPixel( k1 ) - inIt.GetCenterPixel());
       outIt.Value() += w2*this->Wrap(inIt.GetPixel( k2 ) - inIt.GetCenterPixel());
-    
+
     }
-    
+
     ++inIt;
     ++qualIt;
     ++outIt;
-  
+
   }
 
 }
 
-template < typename TInputImage, typename TOutputImage > 
-void 
+template < typename TInputImage, typename TOutputImage >
+void
 WrappedPhaseLaplacianImageFilter< TInputImage, TOutputImage >
-::PrintSelf( std::ostream& os, Indent indent ) const 
+::PrintSelf( std::ostream& os, Indent indent ) const
 {
 
-//  Superclass::PrintSelf(os,indent); 
+//  Superclass::PrintSelf(os,indent);
 
   os << indent << "Weighted: " << m_Weighted << std::endl;
-  
+
 }
- 
+
 }// end namespace itk
  
 #endif

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkWrappedPhaseDifferencesBaseImageFilter_txx
-#define __itkWrappedPhaseDifferencesBaseImageFilter_txx
+#ifndef itkWrappedPhaseDifferencesBaseImageFilter_hxx
+#define itkWrappedPhaseDifferencesBaseImageFilter_hxx
  
 namespace itk {
 
@@ -79,11 +79,10 @@ WrappedPhaseDifferencesBaseImageFilter< TInputImage, TOutputImage >
 
   typename ComposeType::Pointer m_Compose = ComposeType::New();
 
-  for (unsigned int i = 0; i < TInputImage::ImageDimension; ++i) {
-
+  for (unsigned int i = 0; i < TInputImage::ImageDimension; ++i)
+    {
     m_Compose->SetInput( i, this->DirectionalDerivative( i ) );
-	
-  }
+    }
   
   m_Compose->Update();
   

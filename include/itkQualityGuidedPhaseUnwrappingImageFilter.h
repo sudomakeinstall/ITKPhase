@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkQualityGuidedPhaseUnwrappingImageFilter_h
-#define __itkQualityGuidedPhaseUnwrappingImageFilter_h
+#ifndef itkQualityGuidedPhaseUnwrappingImageFilter_h
+#define itkQualityGuidedPhaseUnwrappingImageFilter_h
 
 /** ITK headers */
 #include "itkPhaseImageToImageFilter.h"
@@ -37,6 +37,7 @@
 namespace itk {
 
 /** \class QualityGuidedPhaseUnwrappingImageFilter
+ *  \ingroup ITKPhase
  * \brief Uses a quality-guided phase unwrapping algorithm to unwrap wrapped phase images.
  *
  * This filter assumes a phase image wrapped into the range of -pi to pi as input and
@@ -71,8 +72,8 @@ public:
   /** Standard class typedefs. */
   typedef QualityGuidedPhaseUnwrappingImageFilter              Self;
   typedef PhaseImageToImageFilter< TInputImage, TOutputImage > Superclass;
-  typedef SmartPointer< Self >                 	               Pointer;
-  typedef SmartPointer< const Self >           	               ConstPointer;
+  typedef SmartPointer< Self >                                 Pointer;
+  typedef SmartPointer< const Self >                           ConstPointer;
   
   #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -109,7 +110,7 @@ public:
 
   /** Use this to retrieve the unwrapped phase. */
   TOutputImage* GetPhase();
-	
+
   /** Use this to retrieve the phase quality map. */
   TOutputImage* GetQuality();
   
@@ -117,19 +118,19 @@ public:
   void PrintSelf( std::ostream& os, Indent indent ) const;
  
 protected:
-	
+
   QualityGuidedPhaseUnwrappingImageFilter();
   ~QualityGuidedPhaseUnwrappingImageFilter(){}
-	
+
   /** Does the real work. */
   void GenerateData();
-	
+
   /** Declare component filter types */
   typedef PhaseQualityImageFilter< TInputImage > QualityType;
-	
+
   /** Declare set/get variables */
   IndexType m_TruePhase;
-	
+
   /** Used to create the output images when the GetOutput(n) method is called. */
   DataObject::Pointer MakeOutput(unsigned int idx);
  
@@ -146,7 +147,7 @@ private:
 } //namespace ITK
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkQualityGuidedPhaseUnwrappingImageFilter.txx"
+#include "itkQualityGuidedPhaseUnwrappingImageFilter.hxx"
 #endif
  
 #endif

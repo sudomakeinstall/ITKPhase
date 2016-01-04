@@ -15,8 +15,9 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkPhaseDerivativeVarianceImageFilter_h
-#define __itkPhaseDerivativeVarianceImageFilter_h
+
+#ifndef itkPhaseDerivativeVarianceImageFilter_h
+#define itkPhaseDerivativeVarianceImageFilter_h
  
 #include "itkWrappedPhaseDifferencesBaseImageFilter.h"
 #include "itkObjectFactory.h"
@@ -24,12 +25,11 @@
 #include "itkImageRegionIterator.h"
 #include <valarray>
 #include "itkCovariantVector.h"
-//#include "itkMultiplyImageFilter.h"
-//#include "itkRescaleIntensityImageFilter.h"
 
 namespace itk
 {
 /** \class PhaseDerivativeVarianceImageFilter
+ *  \ingroup ITKPhase
  * \brief Calculates locally unwrapped phase derivative variance, an inverse measure of phase quality.
  *
  * This filter assumes a phase image wrapped into the range of -pi to pi as input and
@@ -130,7 +130,7 @@ private:
 } //namespace ITK
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkPhaseDerivativeVarianceImageFilter.txx"
+#include "itkPhaseDerivativeVarianceImageFilter.hxx"
 #endif
  
 #endif

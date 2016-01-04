@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkPhaseImageToImageFilter_txx
-#define __itkPhaseImageToImageFilter_txx
+#ifndef itkPhaseImageToImageFilter_hxx
+#define itkPhaseImageToImageFilter_hxx
  
 namespace itk {
 
@@ -57,4 +57,4 @@ PhaseImageToImageFilter< TInputImage, TOutputImage >
 
 }// end namespace itk
  
-#endif // __itkPhaseImageToImageFilter_txx
+#endif

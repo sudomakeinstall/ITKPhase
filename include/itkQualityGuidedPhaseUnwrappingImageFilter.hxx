@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkQualityGuidedPhaseUnwrappingImageFilter_txx
-#define __itkQualityGuidedPhaseUnwrappingImageFilter_txx
+#ifndef itkQualityGuidedPhaseUnwrappingImageFilter_hxx
+#define itkQualityGuidedPhaseUnwrappingImageFilter_hxx
 
 #include "itkQualityGuidedPhaseUnwrappingImageFilter.h"
  
@@ -178,18 +178,20 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
   typedef IndexValuePair< IndexType, PixelType > PairType;
   std::set< PairType > AdjoiningPixels;
   
-  for (typename OffsetVectorType::iterator it = offsetVector.begin(); it != offsetVector.end(); ++it) {
-  	
-    if ( input->GetLargestPossibleRegion().IsInside( qualIt.GetIndex( *it ) ) ) {
-  	
+  for (typename OffsetVectorType::iterator it = offsetVector.begin(); it != offsetVector.end(); ++it)
+    {
+
+    if ( input->GetLargestPossibleRegion().IsInside( qualIt.GetIndex( *it ) ) )
+      {
+  
       PairType pixel;
       pixel.Index = qualIt.GetIndex( *it );
       pixel.Value = qualIt.GetPixel( *it );
       AdjoiningPixels.insert( pixel );
-  	
+
+      }
+
     }
-  	
-  }
   
   
   
@@ -198,7 +200,8 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
   // Setup progress reporter
   ProgressReporter progress(this, 0, input->GetLargestPossibleRegion().GetNumberOfPixels(), 100);
   
-  while ( !AdjoiningPixels.empty() ) {
+  while ( !AdjoiningPixels.empty() )
+    {
   
     // Find the active index
     // The active index is the adjoining pixel with the highest quality (lowest derivative variance)
@@ -216,13 +219,15 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
     // Find the adjoining offset (an adjoining pixel with unwrapped phase)
     typename WorkNItType::SizeValueType adjoiningIndex;
     
-    for (typename OffsetVectorType::iterator it = offsetVector.begin(); it != offsetVector.end(); ++it) {
+    for (typename OffsetVectorType::iterator it = offsetVector.begin(); it != offsetVector.end(); ++it)
+      {
     
-      if (binUnwrapIt.GetPixel( *it ) ) {
+      if (binUnwrapIt.GetPixel( *it ) )
+        {
         adjoiningIndex = *it;
         break;
+        }
       }
-    }
     
     // Unwrap active pixel and label it as unwrapped in the binary image
     typename TInputImage::PixelType unwrappedValue = outIt.GetCenterPixel();
@@ -237,18 +242,21 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
     
     AdjoiningPixels.erase( --AdjoiningPixels.end() );
     
-    for (typename OffsetVectorType::iterator it = offsetVector.begin(); it != offsetVector.end(); ++it) {
-      if (!binUnwrapIt.GetPixel( *it ) && input->GetLargestPossibleRegion().IsInside( qualIt.GetIndex( *it ) ) ) {
+    for (typename OffsetVectorType::iterator it = offsetVector.begin(); it != offsetVector.end(); ++it)
+      {
+      if (!binUnwrapIt.GetPixel( *it ) && input->GetLargestPossibleRegion().IsInside( qualIt.GetIndex( *it ) ) )
+        {
     
         PairType pixel;
-    	pixel.Index = qualIt.GetIndex( *it );
+        pixel.Index = qualIt.GetIndex( *it );
         pixel.Value = qualIt.GetPixel( *it );
         AdjoiningPixels.insert( pixel );
-    		
-    	}
-    }
+
+        }
+
+      }
   
-  }
+    }
  
 } // end GenerateData()
 
@@ -266,4 +274,4 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
 
 } // end namespace itk
  
-#endif // DV_QualityGuidedPhaseUnwrappingImageFilter_H
+#endif

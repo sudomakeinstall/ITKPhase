@@ -15,8 +15,9 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkPhaseExamplesImageSource_h
-#define __itkPhaseExamplesImageSource_h
+
+#ifndef itkPhaseExamplesImageSource_h
+#define itkPhaseExamplesImageSource_h
 
 /** ITK headers */
 #include "itkImageSource.h"
@@ -30,6 +31,7 @@
 namespace itk {
 
 /** \class PhaseExamplesImageSource
+ *  \ingroup ITKPhase
  * \brief Provides a variety of simulated phase images for demonstrating and testing
  * phase filters.
  *
@@ -81,13 +83,13 @@ public:
   void Reset();
  
 protected:
-	
+
   PhaseExamplesImageSource();
   ~PhaseExamplesImageSource(){}
-	
+
   /** Does the real work. */
   void GenerateData();
-	
+
 private:
 
   PhaseExamplesImageSource(const Self &); //purposely not implemented
@@ -106,11 +108,11 @@ private:
   typename PasteType::Pointer m_PasteFilter;
   typename WrapType::Pointer  m_WrapFilter;
   
-  bool m_Shear;
-  bool m_Noise;
-  bool m_Wrap;
-  double m_NoiseSD;
-  double m_NoiseMean;
+  bool         m_Shear;
+  bool         m_Noise;
+  bool         m_Wrap;
+  double       m_NoiseSD;
+  double       m_NoiseMean;
   unsigned int m_NoiseSeed;
  
 };
@@ -118,7 +120,7 @@ private:
 } //namespace ITK
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkPhaseExamplesImageSource.txx"
+#include "itkPhaseExamplesImageSource.hxx"
 #endif
  
 #endif

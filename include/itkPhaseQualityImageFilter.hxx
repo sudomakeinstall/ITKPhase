@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkPhaseQualityImageFilter_txx
-#define __itkPhaseQualityImageFilter_txx
+#ifndef itkPhaseQualityImageFilter_hxx
+#define itkPhaseQualityImageFilter_hxx
  
 namespace itk {
 

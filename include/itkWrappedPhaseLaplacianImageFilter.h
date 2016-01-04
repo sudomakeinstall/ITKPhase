@@ -15,8 +15,9 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkWrappedPhaseLaplacianImageFilter_h
-#define __itkWrappedPhaseLaplacianImageFilter_h
+
+#ifndef itkWrappedPhaseLaplacianImageFilter_h
+#define itkWrappedPhaseLaplacianImageFilter_h
 
 #include "itkObjectFactory.h"
 #include "itkImageRegionIterator.h"
@@ -29,6 +30,7 @@
 namespace itk
 {
 /** \class WrappedPhaseLaplacianImageFilter
+ *  \ingroup ITKPhase
  * \brief the Laplacian for a wrapped phase image.
  *
  * The wrapped phase laplacian at a particular pixel is the sum over all dimensions of
@@ -100,7 +102,7 @@ private:
 } //namespace ITK
  
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkWrappedPhaseLaplacianImageFilter.txx"
+#include "itkWrappedPhaseLaplacianImageFilter.hxx"
 #endif
  
 #endif
