@@ -185,8 +185,8 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
       {
   
       PairType pixel;
-      pixel.Index = qualIt.GetIndex( *it );
-      pixel.Value = qualIt.GetPixel( *it );
+      pixel.SetIndex(qualIt.GetIndex( *it ));
+      pixel.SetValue(qualIt.GetPixel( *it ));
       AdjoiningPixels.insert( pixel );
 
       }
@@ -209,7 +209,7 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
     // the first element in the set is the highest quality.
     // The first time through the loop, it should be one pixel away from m_TruePhase
     
-    typename TInputImage::IndexType activeIndex = (--AdjoiningPixels.end())->Index;
+    typename TInputImage::IndexType activeIndex = (--AdjoiningPixels.end())->GetIndex();
     
     // Move the iterators to the active index
     outIt.SetLocation( activeIndex );
@@ -248,8 +248,8 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
         {
     
         PairType pixel;
-        pixel.Index = qualIt.GetIndex( *it );
-        pixel.Value = qualIt.GetPixel( *it );
+        pixel.SetIndex(qualIt.GetIndex( *it ));
+        pixel.SetValue(qualIt.GetPixel( *it ));
         AdjoiningPixels.insert( pixel );
 
         }
