@@ -17,6 +17,8 @@
  *=========================================================================*/
 #ifndef itkPhaseQualityImageFilter_hxx
 #define itkPhaseQualityImageFilter_hxx
+
+#include "itkPhaseQualityImageFilter.h"
  
 namespace itk {
 

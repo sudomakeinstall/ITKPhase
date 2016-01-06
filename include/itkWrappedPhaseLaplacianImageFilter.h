@@ -23,7 +23,6 @@
 #include "itkImageRegionIterator.h"
 #include "itkConstNeighborhoodIterator.h"
 
-// Custom
 #include "itkWrappedPhaseDifferencesBaseImageFilter.h"
 #include "itkPhaseQualityImageFilter.h"
 

@@ -17,6 +17,8 @@
  *=========================================================================*/
 #ifndef itkWrappedPhaseDifferencesBaseImageFilter_hxx
 #define itkWrappedPhaseDifferencesBaseImageFilter_hxx
+
+#include "itkWrappedPhaseDifferencesBaseImageFilter.h"
  
 namespace itk {
 

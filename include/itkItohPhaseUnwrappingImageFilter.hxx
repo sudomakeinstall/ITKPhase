@@ -17,6 +17,8 @@
  *=========================================================================*/
 #ifndef itkItohPhaseUnwrappingImageFilter_hxx
 #define itkItohPhaseUnwrappingImageFilter_hxx
+
+#include "itkItohPhaseUnwrappingImageFilter.h"
  
 namespace itk {
 

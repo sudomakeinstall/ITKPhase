@@ -18,6 +18,8 @@
 #ifndef itkWrappedPhaseLaplacianImageFilter_hxx
 #define itkWrappedPhaseLaplacianImageFilter_hxx
 
+#include "itkWrappedPhaseLaplacianImageFilter.h"
+
 namespace itk {
 
 template< typename TInputImage, typename TOutputImage >

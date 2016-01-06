@@ -17,6 +17,8 @@
  *=========================================================================*/
 #ifndef itkPhaseResidueImageFilter_hxx
 #define itkPhaseResidueImageFilter_hxx
+
+#include "itkPhaseResidueImageFilter.h"
  
 namespace itk {
 

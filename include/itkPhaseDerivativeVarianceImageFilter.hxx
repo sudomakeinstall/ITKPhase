@@ -17,6 +17,8 @@
  *=========================================================================*/
 #ifndef itkPhaseDerivativeVarianceImageFilter_hxx
 #define itkPhaseDerivativeVarianceImageFilter_hxx
+
+#include "itkPhaseDerivativeVarianceImageFilter.h"
  
 namespace itk {
 
