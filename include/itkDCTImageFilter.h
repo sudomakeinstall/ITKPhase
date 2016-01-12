@@ -68,10 +68,11 @@ public:
   // Transform DIRECTION
   typedef  enum { Forward=0, Reverse=1 } TransformDirectionEnumType;
   
-  #ifdef ITK_USE_CONCEPT_CHECKING
+#ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
   itkConceptMacro( SameDimensionCheck,
-                   ( Concept::SameDimension< TInputImage::ImageDimension, TOutputImage::ImageDimension > ) );
+                   ( Concept::SameDimension< TInputImage::ImageDimension,
+                   TOutputImage::ImageDimension > ) );
   
   itkConceptMacro( InputFloatingPointCheck,
                    ( Concept::IsFloatingPoint< typename TInputImage::PixelType > ) );
@@ -79,7 +80,7 @@ public:
   itkConceptMacro( OutputFloatingPointCheck,
                    ( Concept::IsFloatingPoint< typename TOutputImage::PixelType > ) );
   // End concept checking
-  #endif
+#endif
   
   itkSetMacro(TransformDirection, TransformDirectionEnumType);
   itkGetConstMacro(TransformDirection, TransformDirectionEnumType);

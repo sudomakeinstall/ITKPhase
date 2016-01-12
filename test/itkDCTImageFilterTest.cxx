@@ -18,6 +18,7 @@
 
 #include "itkDCTImageFilter.h"
 #include "itkTestingMacros.h"
+#include "itkImageRegionIteratorWithIndex.h"
 
 int itkDCTImageFilterTest(int argc, char **argv)
 {
@@ -27,29 +28,103 @@ int itkDCTImageFilterTest(int argc, char **argv)
     std::cerr << "Usage: " << argv[0] << std::endl;
     return EXIT_FAILURE;
     }
+
+  //////////////
+  // Typedefs //
+  //////////////
   
   const unsigned int Dimension = 2;
   typedef double PixelType;
-
   typedef itk::Image< PixelType, Dimension > ImageType;
-
   typedef itk::DCTImageFilter< ImageType > FilterType;
-  
-  FilterType::Pointer filter = FilterType::New();
+  typedef itk::ImageRegionIteratorWithIndex< ImageType > ItType;
+
+  /////////////
+  // Filters //
+  /////////////
+
+  FilterType::Pointer forward = FilterType::New();
+  FilterType::Pointer inverse = FilterType::New();
 
   ////////////
   // Basics //
   ////////////
 
-  EXERCISE_BASIC_OBJECT_METHODS( filter, FilterType ); 
+  EXERCISE_BASIC_OBJECT_METHODS( forward, FilterType ); 
 
   /////////////////////
   // Set/Get Methods //
   /////////////////////
   
-  TEST_SET_GET_VALUE( FilterType::Forward, filter->GetTransformDirection() );
-  filter->SetTransformDirection( FilterType::Reverse );
-  TEST_SET_GET_VALUE( FilterType::Reverse, filter->GetTransformDirection() );  
+  TEST_SET_GET_VALUE( FilterType::Forward, forward->GetTransformDirection() );
+  forward->SetTransformDirection( FilterType::Reverse );
+  TEST_SET_GET_VALUE( FilterType::Reverse, forward->GetTransformDirection() );  
+
+  ////////////////
+  // Test Image //
+  ////////////////
+
+  ImageType::Pointer constant = ImageType::New();
+
+  const ImageType::RegionType region({0,0},{3,4});
+  constant->SetRegions( region );
+  constant->Allocate();
+  constant->FillBuffer(5);
+
+  //////////////////////////////////////////////
+  // Run the filter in the forward direction. //
+  //////////////////////////////////////////////
+
+  forward->SetInput( constant );
+  forward->SetTransformDirection( FilterType::Forward );
+  forward->Update();
+
+  // The sum of the logical array should be in the DC component (0,0)
+  // Since the DCT is reflected, the logical array is twice the size
+  // of the actual array in each dimension.
+
+  const PixelType dc_measured = forward->GetOutput()->GetPixel({0,0});
+  const PixelType dc_predicted = (3*2)*(4*2)*5;
+  if (!itk::Math::AlmostEquals(dc_measured,dc_predicted))
+    {
+    std::cerr << "ERROR: DC component is incorrect." << std::endl;
+    std::cerr << "Measured: " << dc_measured << std::endl;
+    std::cerr << "Predicted: " << dc_predicted << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  // Since the image was constant, the remaining pixels should be zero.
+
+  ItType fit(forward->GetOutput(), forward->GetOutput()->GetLargestPossibleRegion());
+  for (fit.GoToBegin(); !fit.IsAtEnd(); ++fit)
+    {
+    if (0 == fit.GetIndex()[0] + fit.GetIndex()[1]) continue;
+    if (itk::Math::AlmostEquals(fit.Get(),0)) continue;
+    std::cerr << "ERROR: The value should be near zero." << std::endl;
+    std::cerr << "Value: " << fit.Get() << std::endl;
+    std::cerr << "Index: " << fit.GetIndex() << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  //////////////////////////////////////////////
+  // Run the filter in the inverse direction. //
+  //////////////////////////////////////////////
+
+  inverse->SetTransformDirection( FilterType::Reverse );
+  inverse->SetInput( forward->GetOutput() );
+  inverse->Update();
+
+  ItType rit(inverse->GetOutput(), inverse->GetOutput()->GetLargestPossibleRegion());
+  ItType iit(constant, inverse->GetOutput()->GetLargestPossibleRegion());
+
+  for (rit.GoToBegin(), iit.GoToBegin(); !rit.IsAtEnd(); ++rit, ++iit)
+    {
+    if (itk::Math::AlmostEquals(rit.Get(),iit.Get())) continue;
+    std::cerr << "ERROR: The input and output pixels are not the same." << std::endl;
+    std::cerr << "Input: " << iit.Get() << std::endl;
+    std::cerr << "Output: " << rit.GetIndex() << std::endl;
+    return EXIT_FAILURE;
+    }
 
   return EXIT_SUCCESS;
 

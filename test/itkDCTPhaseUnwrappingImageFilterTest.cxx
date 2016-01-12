@@ -18,6 +18,8 @@
 
 #include "itkDCTPhaseUnwrappingImageFilter.h"
 #include "itkTestingMacros.h"
+#include "itkImageRegionIteratorWithIndex.h"
+#include "itkWrapPhaseFunctor.h"
 
 int itkDCTPhaseUnwrappingImageFilterTest(int argc, char **argv)
 {
@@ -28,14 +30,50 @@ int itkDCTPhaseUnwrappingImageFilterTest(int argc, char **argv)
     return EXIT_FAILURE;
     }
 
+  //////////////
+  // Typedefs //
+  //////////////
+  
   const unsigned int Dimension = 2;
   typedef double PixelType;
-
   typedef itk::Image< PixelType, Dimension > ImageType;
-
   typedef itk::DCTPhaseUnwrappingImageFilter< ImageType > FilterType;
+  typedef itk::ImageRegionIteratorWithIndex< ImageType > ItType;
+  typedef itk::Functor::WrapPhaseFunctor< PixelType > WrapType;
+
+  ////////////////
+  // Test Image //
+  ////////////////
+
+  ImageType::Pointer wrapped = ImageType::New();
+  WrapType wrap;
+
+  const ImageType::RegionType region({0,0},{10,10});
+  wrapped->SetRegions( region );
+  wrapped->Allocate();
+  wrapped->FillBuffer(0);
+
+  ItType it(wrapped, wrapped->GetLargestPossibleRegion());
+  for (it.GoToBegin(); !it.IsAtEnd(); ++it)
+    {
+    it.Set(wrap(it.GetIndex()[0]/2.0)); // Ramp 0 to 5, wrapped
+//    std::cout << it.Get() << std::endl;
+    }
+
+  /////////////////
+  // Test Filter //
+  /////////////////
 
   FilterType::Pointer filter = FilterType::New();
+  filter->SetInput( wrapped );
+  filter->Update();
+
+  ItType fit(filter->GetOutput(), filter->GetOutput()->GetLargestPossibleRegion());
+  for (fit.GoToBegin(); !fit.IsAtEnd(); ++fit)
+    {
+//    fit.Set(wrap(fit.GetIndex()[0]/2.0)); // Ramp 0 to 5, wrapped
+    std::cout << fit.Get() << std::endl;
+    }
 
   ////////////
   // Basics //

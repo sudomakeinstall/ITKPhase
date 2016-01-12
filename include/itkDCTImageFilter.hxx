@@ -25,16 +25,11 @@ namespace itk
 
 template < typename TInputImage, typename TOutputImage >
 DCTImageFilter< TInputImage, TOutputImage >
-::DCTImageFilter() 
-{ 
-
-  m_TransformDirection = Forward;
-
-  // This is where you define filters you need
-  // Instantiate them in the GenerateData() step
-  m_Divide = DivideType::New();
-        
-} 
+::DCTImageFilter()
+:
+m_TransformDirection(Forward),
+m_Divide(DivideType::New())
+{} 
 
 template < typename TInputImage, typename TOutputImage > 
 void 
@@ -45,16 +40,19 @@ DCTImageFilter< TInputImage, TOutputImage >
   // Configure the I/O
   typename TInputImage::ConstPointer input = this->GetInput();
   typename TInputImage::Pointer output = this->GetOutput();
- 
+
+  // FIXME: Is this necessary?  Would this->AllocateOutputs() work instead? 
   output->SetRegions( input->GetLargestPossibleRegion() );
-  
   output->Allocate();
   
-  typename TInputImage::SizeValueType numpix = input->GetLargestPossibleRegion().GetNumberOfPixels();
+  const typename TInputImage::SizeValueType NUMPIX
+    = input->GetLargestPossibleRegion().GetNumberOfPixels();
 
   typename TInputImage::PixelType *in, *out;
-  in = (typename TInputImage::PixelType*) fftw_malloc(sizeof(typename TInputImage::PixelType) * numpix);
-  out = (typename TInputImage::PixelType*) fftw_malloc(sizeof(typename TInputImage::PixelType) * numpix);
+  in = (typename TInputImage::PixelType*)
+    fftw_malloc(sizeof(typename TInputImage::PixelType) * NUMPIX);
+  out = (typename TInputImage::PixelType*)
+    fftw_malloc(sizeof(typename TInputImage::PixelType) * NUMPIX);
 
   in = (typename TInputImage::PixelType*)input->GetBufferPointer();
   out = (typename TInputImage::PixelType*)output->GetBufferPointer();
@@ -62,21 +60,14 @@ DCTImageFilter< TInputImage, TOutputImage >
   fftw_r2r_kind kind[TInputImage::ImageDimension];
   int n[TInputImage::ImageDimension];
 
-  for (unsigned int i = 0; i < TInputImage::ImageDimension; ++i) {
-  
-    // Why is this backwards?  I thought that both c++ and fftw were row order.
-    n[TInputImage::ImageDimension - 1 - i] = input->GetLargestPossibleRegion().GetSize()[i];
-    if (m_TransformDirection == Reverse) {
-    
-      kind[i] = FFTW_REDFT01;
-      
-    } else {
-      
-      kind[i] = FFTW_REDFT10;
-      
-    }
+  for (unsigned int d = 0; d < TInputImage::ImageDimension; ++d)
+    {
 
-  }
+    // Why is this backwards?  I thought that both c++ and fftw were row order.
+    n[TInputImage::ImageDimension - 1 - d] = input->GetLargestPossibleRegion().GetSize()[d];
+    kind[d] = (Reverse == this->m_TransformDirection) ? FFTW_REDFT01 : FFTW_REDFT10;
+
+    }
 
   fftw_plan p = fftw_plan_r2r( TInputImage::ImageDimension, // rank
                                n, // pointer to array of rank integers
@@ -87,16 +78,18 @@ DCTImageFilter< TInputImage, TOutputImage >
   fftw_execute(p);
   fftw_destroy_plan(p);
   
-  if (Reverse == m_TransformDirection) {
+  if (Reverse == this->m_TransformDirection)
+    {
  
-    double norm = numpix*pow(2, TInputImage::ImageDimension);
+    const double NORM = NUMPIX*pow(2, TInputImage::ImageDimension);
 
-    m_Divide->SetInput( output );
-    m_Divide->SetConstant( norm );
-    m_Divide->Update();
-    this->GetOutput()->Graft( m_Divide->GetOutput() );
+    // FIXME: Why are we setting output instead of input?
+    this->m_Divide->SetInput( output );
+    this->m_Divide->SetConstant( NORM );
+    this->m_Divide->Update();
+    this->GetOutput()->Graft( this->m_Divide->GetOutput() );
     
-  }
+    }
 
 } 
 
