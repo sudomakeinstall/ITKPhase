@@ -34,9 +34,10 @@ int itkDCTImageFilterTest(int argc, char **argv)
   //////////////
   
   const unsigned int Dimension = 2;
-  typedef double PixelType;
-  typedef itk::Image< PixelType, Dimension > ImageType;
-  typedef itk::DCTImageFilter< ImageType > FilterType;
+
+  typedef double                                         PixelType;
+  typedef itk::Image< PixelType, Dimension >             ImageType;
+  typedef itk::DCTImageFilter< ImageType >               FilterType;
   typedef itk::ImageRegionIteratorWithIndex< ImageType > ItType;
 
   /////////////

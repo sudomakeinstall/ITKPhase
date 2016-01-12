@@ -10,6 +10,7 @@ itk_module(ITKPhase
     ITKImageNoise
   TEST_DEPENDS
     ITKTestKernel
+    ITKImageFeature
   DESCRIPTION
     "${DOCUMENTATION}"
 )

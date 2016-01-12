@@ -52,10 +52,11 @@ public:
   typedef SmartPointer<Self>                                   Pointer;
   typedef SmartPointer<const Self>                             ConstPointer;
   
-  #ifdef ITK_USE_CONCEPT_CHECKING
+#ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
   itkConceptMacro( SameDimensionCheck,
-                   ( Concept::SameDimension< TInputImage::ImageDimension, TOutputImage::ImageDimension > ) );
+                   ( Concept::SameDimension< TInputImage::ImageDimension,
+                   TOutputImage::ImageDimension > ) );
   
   itkConceptMacro( InputFloatingPointCheck,
                  ( Concept::IsFloatingPoint< typename TInputImage::PixelType > ) );
@@ -63,7 +64,7 @@ public:
   itkConceptMacro( OutputFloatingPointCheck,
                  ( Concept::IsFloatingPoint< typename TOutputImage::PixelType > ) );
   // End concept checking
-  #endif
+#endif
   
   /** Method for creation through object factory */
   itkNewMacro(Self);
@@ -92,10 +93,10 @@ private:
   typedef itk::SubtractImageFilter< TInputImage >              SubtractType;
   typedef itk::DCTPoissonSolverImageFilter< TInputImage >      SolverType;
 
-  typename PType::Pointer        m_P;
-  typename StatsType::Pointer    m_Stats;
-  typename SubtractType::Pointer m_Subtract;
-  typename SolverType::Pointer   m_Solver;
+  typename PType::Pointer        m_P = ITK_NULLPTR;
+  typename StatsType::Pointer    m_Stats = ITK_NULLPTR;
+  typename SubtractType::Pointer m_Subtract = ITK_NULLPTR;
+  typename SolverType::Pointer   m_Solver = ITK_NULLPTR;
   
 };
 

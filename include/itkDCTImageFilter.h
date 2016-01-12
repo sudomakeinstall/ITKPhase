@@ -114,7 +114,7 @@ private:
 
 //  Component filters are declared as data members, all using the smart 
 //  pointer types.
-  typename DivideType::Pointer m_Divide;
+  typename DivideType::Pointer m_Divide = ITK_NULLPTR;
 
 }; 
 

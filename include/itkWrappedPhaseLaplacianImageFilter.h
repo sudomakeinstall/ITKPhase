@@ -93,9 +93,9 @@ private:
   typedef ImageRegionIterator< TInputImage >       ItType;
   typedef PhaseQualityImageFilter< TInputImage >   QualType;
  
-  typename QualType::Pointer m_Qual;
+  typename QualType::Pointer m_Qual = ITK_NULLPTR;
  
-  bool m_Weighted;
+  bool m_Weighted = false;
  
 };
 } //namespace ITK

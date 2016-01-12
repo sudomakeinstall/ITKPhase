@@ -39,7 +39,7 @@ class PCGPhaseUnwrappingImageFilter:public PhaseImageToImageFilter< TImage, TIma
 {
 public:
   /** Standard class typedefs. */
-  typedef PCGPhaseUnwrappingImageFilter                 Self;
+  typedef PCGPhaseUnwrappingImageFilter             Self;
   typedef PhaseImageToImageFilter< TImage, TImage > Superclass;
   typedef SmartPointer< Self >                      Pointer;
   typedef SmartPointer< const Self >                ConstPointer;

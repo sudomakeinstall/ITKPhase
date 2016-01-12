@@ -25,13 +25,13 @@ namespace itk
 
 template < typename TInputImage, typename TOutputImage >
 DCTPoissonSolverImageFilter< TInputImage, TOutputImage >
-::DCTPoissonSolverImageFilter()
+::DCTPoissonSolverImageFilter() :
+m_DCT_Forward(DCTType::New()),
+m_DCT_Inverse(DCTType::New())
 {
 
-  m_DCT_Forward = DCTType::New();
-  m_DCT_Forward->SetTransformDirection( DCTType::Forward );
-  m_DCT_Inverse = DCTType::New();
-  m_DCT_Inverse->SetTransformDirection( DCTType::Reverse );
+  this->m_DCT_Forward->SetTransformDirection( DCTType::Forward );
+  this->m_DCT_Inverse->SetTransformDirection( DCTType::Reverse );
 
 }
 
@@ -44,23 +44,23 @@ DCTPoissonSolverImageFilter< TInputImage, TOutputImage >
   typename TInputImage::ConstPointer input = this->GetInput(); // Save input to variable
   
   // Calculate the forward DCT
-  m_DCT_Forward->SetInput( input );
-  m_DCT_Forward->Update();
+  this->m_DCT_Forward->SetInput( input );
+  this->m_DCT_Forward->Update();
 
   // Save the transformed data to an image for iteration 
-  typename TInputImage::Pointer transformed = m_DCT_Forward->GetOutput();
-  transformed ->Update();
+  typename TInputImage::Pointer transformed = TInputImage::New();
+  transformed->Graft( m_DCT_Forward->GetOutput() );
+  transformed->Update();
 
   // Get the dimensions of the image
-  typename TInputImage::SizeType size = input->GetLargestPossibleRegion().GetSize();
-  typename TInputImage::IndexType index = input->GetLargestPossibleRegion().GetIndex();
+  const typename TInputImage::SizeType size = input->GetLargestPossibleRegion().GetSize();
+  const typename TInputImage::IndexType index = input->GetLargestPossibleRegion().GetIndex();
 
   // Iterate through the temp image
   // See equation 5.60, p. 200
   ItType it(transformed, transformed->GetLargestPossibleRegion() );
-  it.GoToBegin();
-
-  while (!it.IsAtEnd() ) {
+  for (it.GoToBegin(); !it.IsAtEnd(); ++it)
+    {
 
     typename TInputImage::PixelType var = -2*TInputImage::ImageDimension;
 
@@ -71,20 +71,24 @@ DCTPoissonSolverImageFilter< TInputImage, TOutputImage >
 
     it.Value() /= var; // Divide by the result
 
-    ++it;
+    }
 
-  }
+  std::cout << transformed->GetLargestPossibleRegion() << std::endl;
+  for (unsigned int r = 0; r < 10; ++r)
+    for (unsigned int c = 0; c < 10; ++c)
+      std::cout << transformed->GetPixel({r,c}) << std::endl;
 
-  // Set the zero index to "0"
-  typename TInputImage::IndexType zeroIndex;
-  zeroIndex.Fill( 0 );
-  transformed->SetPixel( zeroIndex, 0 );
+//  // Set the zero index to "0"
+//  typename TInputImage::IndexType zeroIndex;
+//  zeroIndex.Fill( 0 );
+//  transformed->SetPixel( zeroIndex, 0 );
+  transformed->SetPixel( index, 0 );
 
   // Take the inverse DCT
-  m_DCT_Inverse->SetInput( transformed );
-  m_DCT_Inverse->Update();
+  this->m_DCT_Inverse->SetInput( transformed );
+  this->m_DCT_Inverse->Update();
   
-  this->GetOutput()->Graft( m_DCT_Inverse->GetOutput() );
+  this->GetOutput()->Graft( this->m_DCT_Inverse->GetOutput() );
 
 }
 

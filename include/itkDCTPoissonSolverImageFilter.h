@@ -51,7 +51,7 @@ public:
   typedef SmartPointer<Self>                              Pointer;
   typedef SmartPointer<const Self>                        ConstPointer;
   
-  #ifdef ITK_USE_CONCEPT_CHECKING
+#ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
   itkConceptMacro( SameDimensionCheck,
                    ( Concept::SameDimension< TInputImage::ImageDimension, TOutputImage::ImageDimension > ) );
@@ -62,7 +62,7 @@ public:
   itkConceptMacro( OutputFloatingPointCheck,
                    ( Concept::IsFloatingPoint< typename TOutputImage::PixelType > ) );
   // End concept checking
-  #endif
+#endif
   
   /** Method for creation through object factory */
   itkNewMacro(Self);
@@ -89,10 +89,10 @@ private:
   void operator=(const Self&); // intentionally not implemented
   
   // Component filter types
-  typedef itk::DCTImageFilter< TInputImage >                   DCTType;
+  typedef itk::DCTImageFilter< TInputImage > DCTType;
 
-  typename DCTType::Pointer   m_DCT_Forward;
-  typename DCTType::Pointer   m_DCT_Inverse;
+  typename DCTType::Pointer m_DCT_Forward = ITK_NULLPTR;
+  typename DCTType::Pointer m_DCT_Inverse = ITK_NULLPTR;
 
 };
 

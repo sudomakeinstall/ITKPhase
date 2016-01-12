@@ -35,11 +35,11 @@ int itkDCTPhaseUnwrappingImageFilterTest(int argc, char **argv)
   //////////////
   
   const unsigned int Dimension = 2;
-  typedef double PixelType;
-  typedef itk::Image< PixelType, Dimension > ImageType;
-  typedef itk::DCTPhaseUnwrappingImageFilter< ImageType > FilterType;
-  typedef itk::ImageRegionIteratorWithIndex< ImageType > ItType;
-  typedef itk::Functor::WrapPhaseFunctor< PixelType > WrapType;
+  typedef double                                          PixelType;
+  typedef itk::Image< PixelType, Dimension >              ImageType;
+  typedef itk::DCTPhaseUnwrappingImageFilter< ImageType > UnwrapType;
+  typedef itk::ImageRegionIteratorWithIndex< ImageType >  ItType;
+  typedef itk::Functor::WrapPhaseFunctor< PixelType >     WrapType;
 
   ////////////////
   // Test Image //
@@ -57,21 +57,20 @@ int itkDCTPhaseUnwrappingImageFilterTest(int argc, char **argv)
   for (it.GoToBegin(); !it.IsAtEnd(); ++it)
     {
     it.Set(wrap(it.GetIndex()[0]/2.0)); // Ramp 0 to 5, wrapped
-//    std::cout << it.Get() << std::endl;
+    std::cout << it.Get() << std::endl;
     }
 
   /////////////////
   // Test Filter //
   /////////////////
 
-  FilterType::Pointer filter = FilterType::New();
-  filter->SetInput( wrapped );
-  filter->Update();
+  UnwrapType::Pointer unwrap = UnwrapType::New();
+  unwrap->SetInput( wrapped );
+  unwrap->Update();
 
-  ItType fit(filter->GetOutput(), filter->GetOutput()->GetLargestPossibleRegion());
+  ItType fit(unwrap->GetOutput(), unwrap->GetOutput()->GetLargestPossibleRegion());
   for (fit.GoToBegin(); !fit.IsAtEnd(); ++fit)
     {
-//    fit.Set(wrap(fit.GetIndex()[0]/2.0)); // Ramp 0 to 5, wrapped
     std::cout << fit.Get() << std::endl;
     }
 
@@ -79,12 +78,8 @@ int itkDCTPhaseUnwrappingImageFilterTest(int argc, char **argv)
   // Basics //
   ////////////
 
-  EXERCISE_BASIC_OBJECT_METHODS( filter, FilterType ); 
+  EXERCISE_BASIC_OBJECT_METHODS( unwrap, UnwrapType ); 
   
-  /////////////////////
-  // Set/Get Methods //
-  /////////////////////
-
   return EXIT_SUCCESS;
 
 }

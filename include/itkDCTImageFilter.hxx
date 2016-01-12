@@ -41,9 +41,7 @@ DCTImageFilter< TInputImage, TOutputImage >
   typename TInputImage::ConstPointer input = this->GetInput();
   typename TInputImage::Pointer output = this->GetOutput();
 
-  // FIXME: Is this necessary?  Would this->AllocateOutputs() work instead? 
-  output->SetRegions( input->GetLargestPossibleRegion() );
-  output->Allocate();
+  this->AllocateOutputs();
   
   const typename TInputImage::SizeValueType NUMPIX
     = input->GetLargestPossibleRegion().GetNumberOfPixels();
@@ -80,10 +78,12 @@ DCTImageFilter< TInputImage, TOutputImage >
   
   if (Reverse == this->m_TransformDirection)
     {
- 
+
+    // Normalize to the LOGICAL array size.
+    // Since the logical array is reflected along each
+    // dimension, multiply NUMPIX by two^dimension. 
     const double NORM = NUMPIX*pow(2, TInputImage::ImageDimension);
 
-    // FIXME: Why are we setting output instead of input?
     this->m_Divide->SetInput( output );
     this->m_Divide->SetConstant( NORM );
     this->m_Divide->Update();

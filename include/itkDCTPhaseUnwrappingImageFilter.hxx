@@ -25,15 +25,12 @@ namespace itk
 
 template < typename TInputImage, typename TOutputImage >
 DCTPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
-::DCTPhaseUnwrappingImageFilter()
-{
-
-  m_P = PType::New();
-  m_Stats = StatsType::New();
-  m_Subtract = SubtractType::New();
-  m_Solver = SolverType::New();
-
-}
+::DCTPhaseUnwrappingImageFilter() :
+m_P(PType::New()),
+m_Stats(StatsType::New()),
+m_Subtract(SubtractType::New()),
+m_Solver(SolverType::New())
+{}
 
 template < typename TInputImage, typename TOutputImage >
 void
@@ -41,24 +38,22 @@ DCTPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
 ::GenerateData()
 {
   
-  typename TInputImage::ConstPointer input = this->GetInput(); // Save input to variable
-  
   // Calculate the Laplacian
-  m_P->SetInput( input );
+  this->m_P->SetInput( this->GetInput() );
 
   // Subtract Constant bias
-  m_Stats->SetInput( m_P->GetOutput() );
-  m_Stats->Update();
+  this->m_Stats->SetInput( this->m_P->GetOutput() );
+  this->m_Stats->Update();
   
-  double bias = m_Stats->GetMean();
+  const double BIAS = this->m_Stats->GetMean();
   
-  m_Subtract->SetInput1( m_P->GetOutput() );
-  m_Subtract->SetConstant2( bias );
+  this->m_Subtract->SetInput1( this->m_P->GetOutput() );
+  this->m_Subtract->SetConstant2( BIAS );
 
-  m_Solver->SetInput( m_Subtract->GetOutput() );
-  m_Solver->Update();
+  this->m_Solver->SetInput( this->m_Subtract->GetOutput() );
+  this->m_Solver->Update();
   
-  this->GetOutput()->Graft( m_Solver->GetOutput() );
+  this->GetOutput()->Graft( this->m_Solver->GetOutput() );
 
 }
 

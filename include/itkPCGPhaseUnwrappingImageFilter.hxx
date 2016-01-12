@@ -264,7 +264,7 @@ void PCGPhaseUnwrappingImageFilter< TImage >
     
       }
     
-    // Calculate alpha    
+    // Calculate alpha
     alpha = 0;
 
     for (zIt.GoToBegin(), pIt.GoToBegin(); !zIt.IsAtEnd(); ++zIt, ++pIt)
