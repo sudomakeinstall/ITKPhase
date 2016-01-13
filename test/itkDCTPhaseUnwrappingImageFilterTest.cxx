@@ -19,6 +19,7 @@
 #include "itkDCTPhaseUnwrappingImageFilter.h"
 #include "itkTestingMacros.h"
 #include "itkImageRegionIteratorWithIndex.h"
+#include "itkNeighborhoodIterator.h"
 #include "itkWrapPhaseFunctor.h"
 
 int itkDCTPhaseUnwrappingImageFilterTest(int argc, char **argv)
@@ -39,6 +40,7 @@ int itkDCTPhaseUnwrappingImageFilterTest(int argc, char **argv)
   typedef itk::Image< PixelType, Dimension >              ImageType;
   typedef itk::DCTPhaseUnwrappingImageFilter< ImageType > UnwrapType;
   typedef itk::ImageRegionIteratorWithIndex< ImageType >  ItType;
+  typedef itk::NeighborhoodIterator< ImageType >          NItType;
   typedef itk::Functor::WrapPhaseFunctor< PixelType >     WrapType;
 
   ////////////////
@@ -49,7 +51,7 @@ int itkDCTPhaseUnwrappingImageFilterTest(int argc, char **argv)
   WrapType wrap;
 
   const ImageType::IndexType index = {{0,0}};
-  const ImageType::SizeType size = {{3,4}};
+  const ImageType::SizeType size = {{10,10}};
   const ImageType::RegionType region(index,size);
   wrapped->SetRegions( region );
   wrapped->Allocate();
@@ -57,10 +59,7 @@ int itkDCTPhaseUnwrappingImageFilterTest(int argc, char **argv)
 
   ItType it(wrapped, wrapped->GetLargestPossibleRegion());
   for (it.GoToBegin(); !it.IsAtEnd(); ++it)
-    {
     it.Set(wrap(it.GetIndex()[0]/2.0)); // Ramp 0 to 5, wrapped
-    std::cout << it.Get() << std::endl;
-    }
 
   /////////////////
   // Test Filter //
@@ -70,11 +69,33 @@ int itkDCTPhaseUnwrappingImageFilterTest(int argc, char **argv)
   unwrap->SetInput( wrapped );
   unwrap->Update();
 
-  ItType fit(unwrap->GetOutput(), unwrap->GetOutput()->GetLargestPossibleRegion());
-  for (fit.GoToBegin(); !fit.IsAtEnd(); ++fit)
+  ///////////////////////////////////
+  // Make sure there are no wraps. //
+  ///////////////////////////////////
+
+  ImageType::IndexType itIndex = {{0,0}};
+  ImageType::SizeType itSize = {{9,9}};
+  ImageType::RegionType itRegion(itIndex,itSize);
+  ImageType::SizeType itRadius = {{3,3}};
+
+  NItType uit(itRadius, unwrap->GetOutput(), itRegion);
+  unsigned int num_wraps = 0;
+  for (uit.GoToBegin(); !uit.IsAtEnd(); ++uit)
     {
-    std::cout << fit.Get() << std::endl;
+    PixelType c = uit.GetCenterPixel();
+    PixelType x = uit.GetPixel(uit.GetStride(0));
+    PixelType y = uit.GetPixel(uit.GetStride(1));
+    if (std::fabs(c-x) < vnl_math::pi && std::fabs(c - y) < vnl_math::pi) continue;
+    ++num_wraps;
     }
+
+  if (0 < num_wraps)
+    {
+    std::cerr << "ERROR: " << num_wraps << " wraps were found." << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  // TODO: Should the gradient be the same in this case?  If so, add a test.
 
   ////////////
   // Basics //

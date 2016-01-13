@@ -51,14 +51,16 @@ int itkWrappedPhaseLaplacianImageFilterTest(int argc, char **argv)
   // Ramp image
   ImageType::Pointer input = ImageType::New();
 
-  const ImageType::RegionType region({0,0},{10,10});
+  const ImageType::IndexType index = {{0,0}};
+  const ImageType::SizeType size = {{10,10}};
+  const ImageType::RegionType region(index,size);
   input->SetRegions( region );
   input->Allocate();
   input->FillBuffer(0);
 
   ItType it(input, input->GetLargestPossibleRegion());
   for (it.GoToBegin(); !it.IsAtEnd(); ++it)
-    it.Set(pow(it.GetIndex()[0]/2.0,2)); // Ramp 0 to 5, wrapped
+    it.Set(it.GetIndex()[0]/2.0); // Ramp 0 to 5, wrapped
 
   // Wrapped version
   WrapType::Pointer wrap = WrapType::New();
@@ -78,20 +80,25 @@ int itkWrappedPhaseLaplacianImageFilterTest(int argc, char **argv)
   wrappedLaplacian->SetInput( wrapped );
   wrappedLaplacian->Update();
 
-  ItType lIt(laplacian->GetOutput(),
-             laplacian->GetOutput()->GetLargestPossibleRegion());
-  ItType wIt(wrappedLaplacian->GetOutput(),
-             wrappedLaplacian->GetOutput()->GetLargestPossibleRegion());
+  // Iteration Region
+  // Check the INTERIOR REGION ONLY, because the boundary conditions
+  // are defined differently.
+  const ImageType::IndexType itIndex = {{1,1}};
+  const ImageType::SizeType itSize = {{8,8}};
+  const ImageType::RegionType itRegion(itIndex,itSize);
+  ItType lIt(laplacian->GetOutput(), itRegion);
+  ItType wIt(wrappedLaplacian->GetOutput(), itRegion);
 
   unsigned int incorrect = 0;
   for (lIt.GoToBegin(), wIt.GoToBegin(); !lIt.IsAtEnd(); ++lIt, ++wIt)
     {
-    if (std::abs(lIt.Get() - wIt.Get()) > 10e-6)
+    if (std::fabs(lIt.Get()-wIt.Get()) > 10e-6)
       {
       ++incorrect;
       std::cerr << "ERROR: Difference found between normal and wrapped." << std::endl;
       std::cerr << "Normal: " << lIt.Get() << std::endl;
       std::cerr << "Wrapped: " << wIt.Get() << std::endl;
+      std::cerr << "Index: " << lIt.GetIndex() << std::endl;
       }
     }
 

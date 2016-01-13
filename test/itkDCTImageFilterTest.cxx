@@ -22,7 +22,12 @@
 
 static bool different(double a, double b)
 {
-return std::fabs(a-b) > 10e-6;
+  return std::fabs(a-b) > 10e-6;
+}
+
+static bool same(double a, double b)
+{
+  return !different(a, b);
 }
 
 int itkDCTImageFilterTest(int argc, char **argv)
@@ -33,6 +38,13 @@ int itkDCTImageFilterTest(int argc, char **argv)
     std::cerr << "Usage: " << argv[0] << std::endl;
     return EXIT_FAILURE;
     }
+
+  ////////////////////////////////////////////////
+  // Setup I/O to output with higher precision. //
+  ////////////////////////////////////////////////
+
+  std::cout.precision(8);
+  std::cerr.precision(8);
 
   //////////////
   // Typedefs //
@@ -94,7 +106,7 @@ int itkDCTImageFilterTest(int argc, char **argv)
   const ImageType::IndexType zeroIndex = {{0,0}};
   const PixelType dc_measured = forward->GetOutput()->GetPixel(zeroIndex);
   const PixelType dc_predicted = (3*2)*(4*2)*5;
-  if (!different(dc_measured,dc_predicted))
+  if (different(dc_measured,dc_predicted))
     {
     std::cerr << "ERROR: DC component is incorrect." << std::endl;
     std::cerr << "Measured: " << dc_measured << std::endl;
@@ -108,9 +120,9 @@ int itkDCTImageFilterTest(int argc, char **argv)
   for (fit.GoToBegin(); !fit.IsAtEnd(); ++fit)
     {
     if (0 == fit.GetIndex()[0] + fit.GetIndex()[1]) continue;
-    if (different(fit.Get(),0.)) continue;
+    if (same(fit.Get(),0.)) continue;
     std::cerr << "ERROR: The value should be near zero." << std::endl;
-    std::cerr << "Value: " << fit.Get() << std::endl;
+    std::cerr << "Value: " << std::fixed << fit.Get() << std::endl;
     std::cerr << "Index: " << fit.GetIndex() << std::endl;
     return EXIT_FAILURE;
     }
@@ -128,10 +140,10 @@ int itkDCTImageFilterTest(int argc, char **argv)
 
   for (rit.GoToBegin(), iit.GoToBegin(); !rit.IsAtEnd(); ++rit, ++iit)
     {
-    if (different(rit.Get(),iit.Get())) continue;
+    if (same(rit.Get(),iit.Get())) continue;
     std::cerr << "ERROR: The input and output pixels are not the same." << std::endl;
     std::cerr << "Input: " << iit.Get() << std::endl;
-    std::cerr << "Output: " << rit.GetIndex() << std::endl;
+    std::cerr << "Output: " << rit.Get() << std::endl;
     return EXIT_FAILURE;
     }
 
