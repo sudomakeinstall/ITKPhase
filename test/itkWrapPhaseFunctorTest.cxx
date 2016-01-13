@@ -21,7 +21,7 @@
 #include "vnl/vnl_math.h"
 #include <iostream>
 
-bool different(double a, double b)
+static bool different(double a, double b)
 {
 // TODO: Wrap functor uses a simplistic algorithm which results in numerical instability
 // Differences are > epsilon from the numeric traits

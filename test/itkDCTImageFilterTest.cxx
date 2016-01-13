@@ -20,6 +20,11 @@
 #include "itkTestingMacros.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
+static bool different(double a, double b)
+{
+return std::fabs(a-b) > 10e-6;
+}
+
 int itkDCTImageFilterTest(int argc, char **argv)
 {
 
@@ -67,7 +72,9 @@ int itkDCTImageFilterTest(int argc, char **argv)
 
   ImageType::Pointer constant = ImageType::New();
 
-  const ImageType::RegionType region({0,0},{3,4});
+  const ImageType::IndexType index = {{0,0}};
+  const ImageType::SizeType size = {{3,4}};
+  const ImageType::RegionType region(index,size);
   constant->SetRegions( region );
   constant->Allocate();
   constant->FillBuffer(5);
@@ -84,9 +91,10 @@ int itkDCTImageFilterTest(int argc, char **argv)
   // Since the DCT is reflected, the logical array is twice the size
   // of the actual array in each dimension.
 
-  const PixelType dc_measured = forward->GetOutput()->GetPixel({0,0});
+  const ImageType::IndexType zeroIndex = {{0,0}};
+  const PixelType dc_measured = forward->GetOutput()->GetPixel(zeroIndex);
   const PixelType dc_predicted = (3*2)*(4*2)*5;
-  if (!itk::Math::AlmostEquals(dc_measured,dc_predicted))
+  if (!different(dc_measured,dc_predicted))
     {
     std::cerr << "ERROR: DC component is incorrect." << std::endl;
     std::cerr << "Measured: " << dc_measured << std::endl;
@@ -100,7 +108,7 @@ int itkDCTImageFilterTest(int argc, char **argv)
   for (fit.GoToBegin(); !fit.IsAtEnd(); ++fit)
     {
     if (0 == fit.GetIndex()[0] + fit.GetIndex()[1]) continue;
-    if (itk::Math::AlmostEquals(fit.Get(),0)) continue;
+    if (different(fit.Get(),0.)) continue;
     std::cerr << "ERROR: The value should be near zero." << std::endl;
     std::cerr << "Value: " << fit.Get() << std::endl;
     std::cerr << "Index: " << fit.GetIndex() << std::endl;
@@ -120,7 +128,7 @@ int itkDCTImageFilterTest(int argc, char **argv)
 
   for (rit.GoToBegin(), iit.GoToBegin(); !rit.IsAtEnd(); ++rit, ++iit)
     {
-    if (itk::Math::AlmostEquals(rit.Get(),iit.Get())) continue;
+    if (different(rit.Get(),iit.Get())) continue;
     std::cerr << "ERROR: The input and output pixels are not the same." << std::endl;
     std::cerr << "Input: " << iit.Get() << std::endl;
     std::cerr << "Output: " << rit.GetIndex() << std::endl;

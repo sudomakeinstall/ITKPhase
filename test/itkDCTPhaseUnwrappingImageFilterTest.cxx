@@ -48,7 +48,9 @@ int itkDCTPhaseUnwrappingImageFilterTest(int argc, char **argv)
   ImageType::Pointer wrapped = ImageType::New();
   WrapType wrap;
 
-  const ImageType::RegionType region({0,0},{10,10});
+  const ImageType::IndexType index = {{0,0}};
+  const ImageType::SizeType size = {{3,4}};
+  const ImageType::RegionType region(index,size);
   wrapped->SetRegions( region );
   wrapped->Allocate();
   wrapped->FillBuffer(0);

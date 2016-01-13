@@ -73,11 +73,6 @@ DCTPoissonSolverImageFilter< TInputImage, TOutputImage >
 
     }
 
-  std::cout << transformed->GetLargestPossibleRegion() << std::endl;
-  for (unsigned int r = 0; r < 10; ++r)
-    for (unsigned int c = 0; c < 10; ++c)
-      std::cout << transformed->GetPixel({r,c}) << std::endl;
-
 //  // Set the zero index to "0"
 //  typename TInputImage::IndexType zeroIndex;
 //  zeroIndex.Fill( 0 );

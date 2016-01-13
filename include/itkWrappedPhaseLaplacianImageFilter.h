@@ -95,7 +95,7 @@ private:
  
   typename QualType::Pointer m_Qual = ITK_NULLPTR;
  
-  bool m_Weighted = false;
+  bool m_Weighted;
  
 };
 } //namespace ITK
