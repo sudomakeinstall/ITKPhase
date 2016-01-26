@@ -12,7 +12,7 @@ Set(ITK${itk-module}Tests
 #  itkPhaseImageToImageFilterTest.cxx
   itkPhaseQualityImageFilterTest.cxx
   itkPhaseResidueImageFilterTest.cxx
-#  itkQualityGuidedPhaseUnwrappingImageFilterTest.cxx
+  itkQualityGuidedPhaseUnwrappingImageFilterTest.cxx
 #  itkWrappedPhaseDifferencesBaseImageFilterTest.cxx
   itkWrappedPhaseLaplacianImageFilterTest.cxx
   itkWrapPhaseFunctorTest.cxx

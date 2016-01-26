@@ -17,24 +17,27 @@
  *=========================================================================*/
 
 #include "itkQualityGuidedPhaseUnwrappingImageFilter.h"
+#include "itkPhaseQualityImageFilter.h"
 #include "itkTestingMacros.h"
 
 int itkQualityGuidedPhaseUnwrappingImageFilterTest(int argc, char **argv)
 {
 
-  if (argc != 1)
+  if (1 != argc)
     {
     std::cerr << "Usage: " << argv[0] << std::endl;
     return EXIT_FAILURE;
     }
-  
+
   const unsigned int Dimension = 2;
   typedef double PixelType;
 
   typedef itk::Image< PixelType, Dimension > ImageType;
 
+  typedef itk::PhaseQualityImageFilter< ImageType >                 QualityType;
   typedef itk::QualityGuidedPhaseUnwrappingImageFilter< ImageType > FilterType;
-  
+
+  QualityType::Pointer quality = QualityType::New();
   FilterType::Pointer filter = FilterType::New();
 
   ImageType::IndexType index;
@@ -52,6 +55,7 @@ int itkQualityGuidedPhaseUnwrappingImageFilterTest(int argc, char **argv)
   
   TEST_SET_GET_VALUE( index, filter->GetTruePhase() );
 
+  //
   return EXIT_SUCCESS;
 
 }

@@ -20,6 +20,20 @@
 
 #include "itkQualityGuidedPhaseUnwrappingImageFilter.h"
  
+/** Standard headers */
+#include <set>
+#include <vector>
+
+/** VNL headers */
+#include "vnl/vnl_math.h"
+
+/** ITK headers */
+#include "itkImageAlgorithm.h"
+#include "itkProgressReporter.h"
+
+/** Contributed headers */
+#include "itkIndexValuePair.h"
+
 namespace itk {
 
 template< typename TInputImage, typename TOutputImage >
@@ -27,102 +41,62 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
 ::QualityGuidedPhaseUnwrappingImageFilter()
 {
 
-  /** There are two required outputs for this filter. */
-  this->SetNumberOfRequiredOutputs(2);
-  
-  this->SetNthOutput( 0, this->MakeOutput(0) ); // Unwrapped Phase, GetPhase()
-  this->SetNthOutput( 1, this->MakeOutput(1) ); // Phase Quality Map, GetQuality()
-
-  /** There is one required input for this filter. */
-  this->SetNumberOfRequiredInputs(1);
+  /** There are two required inputs for this filter: the phase and the quality. */
+  this->SetNumberOfRequiredInputs(2);
 
 }
 
-template< typename TInputImage, typename TOutputImage >
-DataObject::Pointer
-QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
-::MakeOutput(unsigned int id)
+template< class TInputImage, class TOutputImage>
+void
+QualityGuidedPhaseUnwrappingImageFilter<TInputImage, TOutputImage>
+::SetPhaseImage(const TInputImage* image)
 {
-  DataObject::Pointer output;
- 
-  switch ( id )
-    {
-    case 0:
-      output = ( TOutputImage::New() ).GetPointer();
-      break;
-    case 1:
-      output = ( TOutputImage::New() ).GetPointer();
-      break;
-    default:
-      std::cerr << "No output " << id << std::endl;
-      output = NULL;
-      break;
-    }
-  return output.GetPointer();
-}
-
-template< typename TInputImage, typename TOutputImage >
-TOutputImage*
-QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
-::GetPhase()
-{
-  return dynamic_cast< TOutputImage * >( this->ProcessObject::GetOutput(0) );
-}
-
-template< typename TInputImage, typename TOutputImage >
-TOutputImage*
-QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
-::GetQuality()
-{
-  return dynamic_cast< TOutputImage * >( this->ProcessObject::GetOutput(1) );
+  this->SetNthInput(0, const_cast<TInputImage*>(image));
 }
  
+template< class TInputImage, class TOutputImage>
+void
+QualityGuidedPhaseUnwrappingImageFilter<TInputImage, TOutputImage>
+::SetQualityImage(const TInputImage* image)
+{
+  this->SetNthInput(1, const_cast<TInputImage*>(image));
+}
+
 template< typename TInputImage, typename TOutputImage >
 void
 QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
 ::GenerateData()
 {
 
-
   /**
    *
    * Allocate input/output and temporary images.
-   * Input: input
-   * Output: unwrapped, quality
-   * Temporary: binaryUnwrapped
+   * Input 1: Wrapped phase image.
+   * Input 2: Phase quality image.
+   * Output: Unwrapped phase image.
+   * Temporary: Binary unwrapped image (indicates which pixels have been unwrapped).
    *
    */
-  
+
   /** Create input/output images.  */
-  typename TInputImage::ConstPointer input = this->GetInput(); // wrapped phase
-  typename TOutputImage::Pointer unwrapped = this->GetPhase(); // unwrapped phase
-  typename TOutputImage::Pointer quality = this->GetQuality(); // phase quality
-  
+  typename TInputImage::ConstPointer input = this->GetInput(0); // wrapped phase
+  typename TInputImage::ConstPointer quality = this->GetInput(1); // phase quality
+  typename TOutputImage::Pointer unwrapped = this->GetOutput();
+
   this->AllocateOutputs();
-  
+ 
   /** Fill unwrapped data with input. */
   ImageAlgorithm::Copy(input.GetPointer(),
                        unwrapped.GetPointer(),
                        unwrapped->GetLargestPossibleRegion(),
                        unwrapped->GetLargestPossibleRegion() );
-                       
-  /** Calculate phase quality and copy to quality image. */
-  m_Quality = QualityType::New();
-  m_Quality->SetInput( input );
-  typename TInputImage::Pointer qualTemp = m_Quality->GetOutput();
-  qualTemp->Update();
-  
-  ImageAlgorithm::Copy(qualTemp.GetPointer(),
-                       quality.GetPointer(),
-                       unwrapped->GetLargestPossibleRegion(),
-                       unwrapped->GetLargestPossibleRegion() );
-                       
+
   /** Create a binary image to keep track of pixels that need to be unwrapped. */
   typename TBinaryImage::Pointer binaryUnwrapped = TBinaryImage::New();
   binaryUnwrapped->SetRegions( input->GetLargestPossibleRegion() );
   binaryUnwrapped->Allocate();
   binaryUnwrapped->FillBuffer( false );
-  
+ 
   /**
    *
    * Create neighborhood iterators for the unwrapped, binary, and quality images.
@@ -130,31 +104,30 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
    * Set the center pixel to be "unwrapped."
    *
    */
-  
+
   typename WorkNItType::RadiusType radius;
   radius.Fill( 1 );
-  
-  WorkNItType outIt( radius, unwrapped, unwrapped->GetLargestPossibleRegion() );
+
+  WorkNItType   outIt(       radius, unwrapped,       unwrapped->GetLargestPossibleRegion() );
   BinaryNItType binUnwrapIt( radius, binaryUnwrapped, unwrapped->GetLargestPossibleRegion() );
-  WorkNItType qualIt( radius, quality, unwrapped->GetLargestPossibleRegion() );
-  
+  WorkCNItType  qualIt(      radius, quality,         unwrapped->GetLargestPossibleRegion() );
+
   outIt.SetLocation( m_TruePhase );
   binUnwrapIt.SetLocation( m_TruePhase );
   qualIt.SetLocation( m_TruePhase );
-  
+
   binUnwrapIt.SetCenterPixel( true );
-  
+
   typedef std::vector< typename WorkNItType::SizeValueType > OffsetVectorType;
   OffsetVectorType offsetVector;
   typename WorkNItType::SizeValueType center = outIt.Size() / 2;
-  
-  for (int i = 0; i < TInputImage::ImageDimension; ++i) {
 
+  for (unsigned int i = 0; i < TInputImage::ImageDimension; ++i)
+    {
     offsetVector.push_back( center - outIt.GetStride( i ) );
     offsetVector.push_back( center + outIt.GetStride( i ) );
-  
-  }
-  
+    }
+ 
   /**
    *
    * Create a list to keep track of those pixels which are adjoining and their quality.
@@ -178,7 +151,9 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
   typedef IndexValuePair< IndexType, PixelType > PairType;
   std::set< PairType > AdjoiningPixels;
   
-  for (typename OffsetVectorType::iterator it = offsetVector.begin(); it != offsetVector.end(); ++it)
+  for (typename OffsetVectorType::iterator it = offsetVector.begin();
+       it != offsetVector.end();
+       ++it)
     {
 
     if ( input->GetLargestPossibleRegion().IsInside( qualIt.GetIndex( *it ) ) )
@@ -192,9 +167,7 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
       }
 
     }
-  
-  
-  
+
   // Valid region; use validRegion.IsInside( pixelIndex )
   
   // Setup progress reporter
@@ -219,16 +192,18 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
     // Find the adjoining offset (an adjoining pixel with unwrapped phase)
     typename WorkNItType::SizeValueType adjoiningIndex;
     
-    for (typename OffsetVectorType::iterator it = offsetVector.begin(); it != offsetVector.end(); ++it)
+    for (typename OffsetVectorType::iterator it = offsetVector.begin();
+         it != offsetVector.end();
+         ++it)
       {
-    
+
       if (binUnwrapIt.GetPixel( *it ) )
         {
         adjoiningIndex = *it;
         break;
         }
       }
-    
+
     // Unwrap active pixel and label it as unwrapped in the binary image
     typename TInputImage::PixelType unwrappedValue = outIt.GetCenterPixel();
     typename TInputImage::PixelType adjoiningValue = outIt.GetPixel( adjoiningIndex );
@@ -242,9 +217,12 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
     
     AdjoiningPixels.erase( --AdjoiningPixels.end() );
     
-    for (typename OffsetVectorType::iterator it = offsetVector.begin(); it != offsetVector.end(); ++it)
+    for (typename OffsetVectorType::iterator it = offsetVector.begin();
+         it != offsetVector.end();
+         ++it)
       {
-      if (!binUnwrapIt.GetPixel( *it ) && input->GetLargestPossibleRegion().IsInside( qualIt.GetIndex( *it ) ) )
+      if (!binUnwrapIt.GetPixel( *it ) &&
+          input->GetLargestPossibleRegion().IsInside( qualIt.GetIndex( *it ) ) )
         {
     
         PairType pixel;
@@ -268,7 +246,7 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
 
   Superclass::PrintSelf(os,indent); 
 
-  os << indent << "TruePhase: " << m_TruePhase << std::endl;
+  os << indent << "TruePhase: " << this->m_TruePhase << std::endl;
   
 }
 

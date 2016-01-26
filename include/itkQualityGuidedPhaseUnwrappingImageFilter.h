@@ -19,20 +19,9 @@
 #define itkQualityGuidedPhaseUnwrappingImageFilter_h
 
 /** ITK headers */
-#include "itkPhaseImageToImageFilter.h"
 #include "itkObjectFactory.h"
-#include "itkImageAlgorithm.h"
-#include "itkProgressReporter.h"
 #include "itkNeighborhoodIterator.h"
-
-/** Standard and VNL headers */
-#include <set>
-#include <vector>
-#include "vnl/vnl_math.h"
-
-/** Custom headers */
-#include "itkPhaseQualityImageFilter.h"
-#include "itkIndexValuePair.h"
+#include "itkPhaseImageToImageFilter.h"
 
 namespace itk {
 
@@ -40,16 +29,13 @@ namespace itk {
  *  \ingroup ITKPhase
  * \brief Uses a quality-guided phase unwrapping algorithm to unwrap wrapped phase images.
  *
- * This filter assumes a phase image wrapped into the range of -pi to pi as input and
- * provides phase quality and unwrapped phase as output.  Phase quality may be retrieved
- * through the GetQuality() method, and unwrapped phase may be retrieved through the
- * GetPhase() method.  The filter requires that the index of a pixel with "true" phase
- * be provided through the SetTruePhase( TImage::IndexType index ) method.
+ * This filter takes two input images: wrapped phase, and phase quality.  The wrapped
+ * phase image is expected to be in the range of -pi to pi; for the quality image,
+ * higher floating point values are taken to indicate higher quality.  Unwrapped
+ * phase is the filter's only output.  The filter requires that the index of a pixel
+ * with "true" phase be provided through the SetTruePhase() method.
  *
- * Phase quality is calculated by calling the \code{PhaseQualityImageFilter} class.
- * Appropriate methods are provided to interface with this class.
- *
- * The index specified by SetTruePhase is assumed to be unwrapped.  The adjoining pixels
+ * The index specified by SetTruePhase() is assumed to be unwrapped.  The adjoining pixels
  * (those which are plus/minus one index in each dimension) are then defined to be
  * "candidate" pixels (that is, they are candidates to be the next pixel unwrapped).
  * The candidate pixel with the highest phase quality is unwrapped, and any pixels
@@ -78,7 +64,8 @@ public:
   #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
   itkConceptMacro( SameDimensionCheck,
-                   ( Concept::SameDimension< TInputImage::ImageDimension, TOutputImage::ImageDimension > ) );
+                   ( Concept::SameDimension< TInputImage::ImageDimension,
+                     TOutputImage::ImageDimension > ) );
   
   itkConceptMacro( InputFloatingPointCheck,
                    ( Concept::IsFloatingPoint< typename TInputImage::PixelType > ) );
@@ -92,6 +79,7 @@ public:
   typedef typename TInputImage::IndexType            IndexType;
   typedef typename TInputImage::PixelType            PixelType;
   typedef Image< bool, TInputImage::ImageDimension > TBinaryImage;
+  typedef ConstNeighborhoodIterator< TInputImage >   WorkCNItType;
   typedef NeighborhoodIterator< TInputImage >        WorkNItType;
   typedef NeighborhoodIterator< TBinaryImage >       BinaryNItType;
  
@@ -108,12 +96,14 @@ public:
   itkSetMacro( TruePhase, IndexType );
   itkGetConstMacro( TruePhase, IndexType );
 
-  /** Use this to retrieve the unwrapped phase. */
-  TOutputImage* GetPhase();
+  /** Set the phase image to be unwrapped.  This is assumed to be
+      in the range -pi to pi.*/
+  void SetPhaseImage(const TInputImage*);
+ 
+  /** Set the phase quality image.  Higher quality pixels must be
+      indicated by higher floating point values.*/
+  void SetQualityImage(const TInputImage*);
 
-  /** Use this to retrieve the phase quality map. */
-  TOutputImage* GetQuality();
-  
   /** Display */
   void PrintSelf( std::ostream& os, Indent indent ) const;
  
@@ -125,23 +115,14 @@ protected:
   /** Does the real work. */
   void GenerateData();
 
-  /** Declare component filter types */
-  typedef PhaseQualityImageFilter< TInputImage > QualityType;
-
   /** Declare set/get variables */
   IndexType m_TruePhase;
 
-  /** Used to create the output images when the GetOutput(n) method is called. */
-  DataObject::Pointer MakeOutput(unsigned int idx);
- 
 private:
 
   QualityGuidedPhaseUnwrappingImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
   
-  /** Instantiate component filters */
-  typename QualityType::Pointer m_Quality;
- 
 };
 
 } //namespace ITK
