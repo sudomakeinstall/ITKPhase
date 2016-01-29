@@ -52,10 +52,6 @@ DCTPoissonSolverImageFilter< TInputImage, TOutputImage >
   transformed->Graft( m_DCT_Forward->GetOutput() );
   transformed->Update();
 
-  typename TInputImage::IndexType bug;
-  bug.Fill( 50 );
-  std::cout << "TRANSFORMED: " << transformed->GetPixel( bug ) << std::endl;
-
   // Get the dimensions of the image
   const typename TInputImage::SizeType size = input->GetLargestPossibleRegion().GetSize();
   const typename TInputImage::IndexType index = input->GetLargestPossibleRegion().GetIndex();
@@ -66,34 +62,25 @@ DCTPoissonSolverImageFilter< TInputImage, TOutputImage >
   for (it.GoToBegin(); !it.IsAtEnd(); ++it)
     {
 
-    typename TInputImage::PixelType var = -2*TInputImage::ImageDimension;
+    typename TInputImage::PixelType var = -2*static_cast<signed>(TInputImage::ImageDimension);
 
     for (unsigned int i = 0; i < TInputImage::ImageDimension; ++i)
       {
-      var += 2*cos(vnl_math::pi*(it.GetIndex()[i] - index[i]) / size[i]);
+      var += 2*std::cos(vnl_math::pi*(it.GetIndex()[i] - index[i]) / size[i]);
       } // 5.60, p.200
 
     it.Value() /= var; // Divide by the result
 
     }
 
-  std::cout << "MODIFIED: " << transformed->GetPixel( bug ) << std::endl;
-
-//  // Set the zero index to "0"
-//  typename TInputImage::IndexType zeroIndex;
-//  zeroIndex.Fill( 0 );
-//  transformed->SetPixel( zeroIndex, 0 );
-  transformed->SetPixel( index, 0 );
+  // Set the zero index to "0"
+  transformed->SetPixel( index, 0.0 );
 
   // Take the inverse DCT
   this->m_DCT_Inverse->SetInput( transformed );
   this->m_DCT_Inverse->Update();
   
-  std::cout << "BACKTOSPACE: " << m_DCT_Inverse->GetOutput()->GetPixel( bug ) << std::endl;
-
   this->GetOutput()->Graft( this->m_DCT_Inverse->GetOutput() );
-
-  std::cout << "OUTPUT: " << this->GetOutput()->GetPixel( bug ) << std::endl;
 
 }
 

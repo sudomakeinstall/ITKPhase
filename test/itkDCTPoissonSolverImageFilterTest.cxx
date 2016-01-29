@@ -32,6 +32,11 @@ int itkDCTPoissonSolverImageFilterTest(int argc, char **argv)
     return EXIT_FAILURE;
     }
 
+  unsigned u = 1;
+  signed s = -1;
+  signed r = s*u;
+  std::cout << "RESULT: " << r << std::endl;
+
   const std::string InputFileName = argv[1];
 
   //////////////
@@ -90,30 +95,6 @@ int itkDCTPoissonSolverImageFilterTest(int argc, char **argv)
   if (10e-6 < stats->GetVariance())
     {
     std::cerr << "A significant difference was noted in the difference image." << std::endl;
-
-    std::cerr << "INPUT:" << std::endl;
-    stats->SetInput( image );
-    stats->Update();
-    std::cerr << "MEAN: "     << stats->GetMean() << std::endl;
-    std::cerr << "MIN: "      << stats->GetMinimum() << std::endl;
-    std::cerr << "MAX: "      << stats->GetMaximum() << std::endl;
-    std::cerr << "VARIANCE: " << stats->GetVariance() << std::endl << std::endl;
-
-    std::cerr << "LAPLACIAN:" << std::endl;
-    stats->SetInput( laplacian->GetOutput() );
-    stats->Update();
-    std::cerr << "MEAN: "     << stats->GetMean() << std::endl;
-    std::cerr << "MIN: "      << stats->GetMinimum() << std::endl;
-    std::cerr << "MAX: "      << stats->GetMaximum() << std::endl;
-    std::cerr << "VARIANCE: " << stats->GetVariance() << std::endl << std::endl;
-
-    std::cerr << "SOLVED:" << std::endl;
-    stats->SetInput( solved );
-    stats->Update();
-    std::cerr << "MEAN: "     << stats->GetMean() << std::endl;
-    std::cerr << "MIN: "      << stats->GetMinimum() << std::endl;
-    std::cerr << "MAX: "      << stats->GetMaximum() << std::endl;
-    std::cerr << "VARIANCE: " << stats->GetVariance() << std::endl << std::endl;
 
     std::cerr << "DIFFERENCE:" << std::endl;
     stats->SetInput( subtract->GetOutput() );
