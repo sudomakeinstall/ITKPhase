@@ -52,6 +52,10 @@ DCTPoissonSolverImageFilter< TInputImage, TOutputImage >
   transformed->Graft( m_DCT_Forward->GetOutput() );
   transformed->Update();
 
+  typename TInputImage::IndexType bug;
+  bug.Fill( 50 );
+  std::cout << "TRANSFORMED: " << transformed->GetPixel( bug ) << std::endl;
+
   // Get the dimensions of the image
   const typename TInputImage::SizeType size = input->GetLargestPossibleRegion().GetSize();
   const typename TInputImage::IndexType index = input->GetLargestPossibleRegion().GetIndex();
@@ -73,6 +77,8 @@ DCTPoissonSolverImageFilter< TInputImage, TOutputImage >
 
     }
 
+  std::cout << "MODIFIED: " << transformed->GetPixel( bug ) << std::endl;
+
 //  // Set the zero index to "0"
 //  typename TInputImage::IndexType zeroIndex;
 //  zeroIndex.Fill( 0 );
@@ -83,7 +89,11 @@ DCTPoissonSolverImageFilter< TInputImage, TOutputImage >
   this->m_DCT_Inverse->SetInput( transformed );
   this->m_DCT_Inverse->Update();
   
+  std::cout << "BACKTOSPACE: " << m_DCT_Inverse->GetOutput()->GetPixel( bug ) << std::endl;
+
   this->GetOutput()->Graft( this->m_DCT_Inverse->GetOutput() );
+
+  std::cout << "OUTPUT: " << this->GetOutput()->GetPixel( bug ) << std::endl;
 
 }
 
