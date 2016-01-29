@@ -58,6 +58,12 @@ int itkDCTPoissonSolverImageFilterTest(int argc, char **argv)
   SubtractType::Pointer subtract   = SubtractType::New();
   StatsType::Pointer stats         = StatsType::New();
 
+  ////////////
+  // Basics //
+  ////////////
+
+  EXERCISE_BASIC_OBJECT_METHODS( solver, SolverType ); 
+
   ////////////////
   // Test Image //
   ////////////////
@@ -81,54 +87,15 @@ int itkDCTPoissonSolverImageFilterTest(int argc, char **argv)
   stats->SetInput( subtract->GetOutput() );
   stats->Update();
 
-  std::cout << "MEAN: " << stats->GetMean() << std::endl;
-  std::cout << "MIN: " << stats->GetMinimum() << std::endl;
-  std::cout << "MAX: " << stats->GetMaximum() << std::endl;
-  std::cout << "VARIANCE: " << stats->GetVariance() << std::endl;
-
-//  ImageType::Pointer input = ImageType::New();
-//
-//  const ImageType::RegionType region({0,0},{10,10});
-//  input->SetRegions( region );
-//  input->Allocate();
-//  input->FillBuffer(0);
-//
-//  ItType inIt(input, input->GetLargestPossibleRegion());
-//  for (inIt.GoToBegin(); !inIt.IsAtEnd(); ++inIt)
-//    inIt.Set(pow(inIt.GetIndex()[1]-5,2));
-//
-//  //////////////
-//  // Pipeline //
-//  //////////////
-//
-//  laplacian->SetInput( input );
-//  solver->SetInput( laplacian->GetOutput() );
-//  solver->Update();
-//
-//  ItType inpIt(input, input->GetLargestPossibleRegion());
-//  ItType lapIt(laplacian->GetOutput(), laplacian->GetOutput()->GetLargestPossibleRegion());
-//  ItType outIt(solver->GetOutput(), solver->GetOutput()->GetLargestPossibleRegion());
-//
-//  for (inpIt.GoToBegin(), lapIt.GoToBegin(), outIt.GoToBegin();
-//       !inpIt.IsAtEnd();
-//       ++inpIt, ++lapIt, ++outIt)
-//    {
-//    std::cout << inpIt.Get() << std::endl;
-//    std::cout << lapIt.Get() << std::endl;
-//    std::cout << outIt.Get() << std::endl << std::endl;
-//    }
-
-  ////////////
-  // Basics //
-  ////////////
-
-  EXERCISE_BASIC_OBJECT_METHODS( solver, SolverType ); 
-
-  /////////////////////
-  // Set/Get Methods //
-  /////////////////////
-  
-  // No properties to set.
+  if (10e-6 < stats->GetVariance())
+    {
+    std::cerr << "A significant difference was noted in the difference image." << std::endl;
+    std::cout << "MEAN: " << stats->GetMean() << std::endl;
+    std::cout << "MIN: " << stats->GetMinimum() << std::endl;
+    std::cout << "MAX: " << stats->GetMaximum() << std::endl;
+    std::cout << "VARIANCE: " << stats->GetVariance() << std::endl;
+    return EXIT_FAILURE;
+    }
 
   return EXIT_SUCCESS;
 
