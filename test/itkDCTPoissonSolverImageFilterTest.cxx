@@ -43,7 +43,7 @@ int itkDCTPoissonSolverImageFilterTest(int argc, char **argv)
   typedef double                                            PixelType;
   typedef itk::Image< PixelType, Dimension >                ImageType;
   typedef itk::ImageFileReader< ImageType >                 ReaderType;
-  typedef itk::LaplacianImageFilter< ImageType, ImageType >        LaplacianType;
+  typedef itk::LaplacianImageFilter< ImageType, ImageType > LaplacianType;
   typedef itk::DCTPoissonSolverImageFilter< ImageType >     SolverType;
   typedef itk::SubtractImageFilter< ImageType >             SubtractType;
   typedef itk::StatisticsImageFilter< ImageType >           StatsType;
@@ -90,10 +90,39 @@ int itkDCTPoissonSolverImageFilterTest(int argc, char **argv)
   if (10e-6 < stats->GetVariance())
     {
     std::cerr << "A significant difference was noted in the difference image." << std::endl;
-    std::cout << "MEAN: " << stats->GetMean() << std::endl;
-    std::cout << "MIN: " << stats->GetMinimum() << std::endl;
-    std::cout << "MAX: " << stats->GetMaximum() << std::endl;
-    std::cout << "VARIANCE: " << stats->GetVariance() << std::endl;
+
+    std::cerr << "INPUT:" << std::endl;
+    stats->SetInput( image );
+    stats->Update();
+    std::cerr << "MEAN: "     << stats->GetMean() << std::endl;
+    std::cerr << "MIN: "      << stats->GetMinimum() << std::endl;
+    std::cerr << "MAX: "      << stats->GetMaximum() << std::endl;
+    std::cerr << "VARIANCE: " << stats->GetVariance() << std::endl << std::endl;
+
+    std::cerr << "LAPLACIAN:" << std::endl;
+    stats->SetInput( laplacian->GetOutput() );
+    stats->Update();
+    std::cerr << "MEAN: "     << stats->GetMean() << std::endl;
+    std::cerr << "MIN: "      << stats->GetMinimum() << std::endl;
+    std::cerr << "MAX: "      << stats->GetMaximum() << std::endl;
+    std::cerr << "VARIANCE: " << stats->GetVariance() << std::endl << std::endl;
+
+    std::cerr << "SOLVED:" << std::endl;
+    stats->SetInput( solved );
+    stats->Update();
+    std::cerr << "MEAN: "     << stats->GetMean() << std::endl;
+    std::cerr << "MIN: "      << stats->GetMinimum() << std::endl;
+    std::cerr << "MAX: "      << stats->GetMaximum() << std::endl;
+    std::cerr << "VARIANCE: " << stats->GetVariance() << std::endl << std::endl;
+
+    std::cerr << "DIFFERENCE:" << std::endl;
+    stats->SetInput( subtract->GetOutput() );
+    stats->Update();
+    std::cerr << "MEAN: "     << stats->GetMean() << std::endl;
+    std::cerr << "MIN: "      << stats->GetMinimum() << std::endl;
+    std::cerr << "MAX: "      << stats->GetMaximum() << std::endl;
+    std::cerr << "VARIANCE: " << stats->GetVariance() << std::endl << std::endl;
+
     return EXIT_FAILURE;
     }
 
