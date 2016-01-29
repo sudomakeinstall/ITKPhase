@@ -31,7 +31,8 @@ itk_add_test(NAME itkIndexValuePairTest
 itk_add_test(NAME itkItohPhaseUnwrappingImageFilterTest
   COMMAND ${itk-module}TestDriver itkItohPhaseUnwrappingImageFilterTest )
 itk_add_test(NAME itkDCTPoissonSolverImageFilterTest
-  COMMAND ${itk-module}TestDriver itkDCTPoissonSolverImageFilterTest )
+  COMMAND ${itk-module}TestDriver itkDCTPoissonSolverImageFilterTest
+    DATA{${ITK_DATA_ROOT}/Input/CellsFluorescence1.png} )
 itk_add_test(NAME itkPhaseDerivativeVarianceImageFilterTest
   COMMAND ${itk-module}TestDriver itkPhaseDerivativeVarianceImageFilterTest )
 itk_add_test(NAME itkPhaseExamplesImageSourceTest

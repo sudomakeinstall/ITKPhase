@@ -16,19 +16,23 @@
  *
  *=========================================================================*/
 
-#include "itkDCTPoissonSolverImageFilter.h"
-#include "itkImageRegionIteratorWithIndex.h"
+#include "itkImageFileReader.h"
 #include "itkLaplacianImageFilter.h"
+#include "itkDCTPoissonSolverImageFilter.h"
+#include "itkSubtractImageFilter.h"
+#include "itkStatisticsImageFilter.h"
 #include "itkTestingMacros.h"
 
 int itkDCTPoissonSolverImageFilterTest(int argc, char **argv)
 {
   
-  if (argc != 1)
+  if (argc != 2)
     {
-    std::cerr << "Usage: " << argv[0] << std::endl;
+    std::cerr << "Usage: " << argv[0] << " <inputImage>" << std::endl;
     return EXIT_FAILURE;
     }
+
+  const std::string InputFileName = argv[1];
 
   //////////////
   // Typedefs //
@@ -38,48 +42,81 @@ int itkDCTPoissonSolverImageFilterTest(int argc, char **argv)
 
   typedef double                                            PixelType;
   typedef itk::Image< PixelType, Dimension >                ImageType;
-  typedef itk::ImageRegionIteratorWithIndex< ImageType >    ItType;
-  typedef itk::LaplacianImageFilter< ImageType, ImageType > LaplacianType;
+  typedef itk::ImageFileReader< ImageType >                 ReaderType;
+  typedef itk::LaplacianImageFilter< ImageType, ImageType >        LaplacianType;
   typedef itk::DCTPoissonSolverImageFilter< ImageType >     SolverType;
+  typedef itk::SubtractImageFilter< ImageType >             SubtractType;
+  typedef itk::StatisticsImageFilter< ImageType >           StatsType;
 
+  ////////////////////
+  // Instantiations //
+  ////////////////////
+
+  ReaderType::Pointer reader       = ReaderType::New();
   LaplacianType::Pointer laplacian = LaplacianType::New();
-  SolverType::Pointer solver = SolverType::New();
+  SolverType::Pointer solver       = SolverType::New();
+  SubtractType::Pointer subtract   = SubtractType::New();
+  StatsType::Pointer stats         = StatsType::New();
 
   ////////////////
   // Test Image //
   ////////////////
 
-  ImageType::Pointer input = ImageType::New();
+  reader->SetFileName( InputFileName );
+  reader->Update();
 
-  const ImageType::RegionType region({0,0},{10,10});
-  input->SetRegions( region );
-  input->Allocate();
-  input->FillBuffer(0);
+  ImageType::Pointer image = ImageType::New();
+  image->Graft( reader->GetOutput() );
 
-  ItType inIt(input, input->GetLargestPossibleRegion());
-  for (inIt.GoToBegin(); !inIt.IsAtEnd(); ++inIt)
-    inIt.Set(pow(inIt.GetIndex()[1]-5,2));
-
-  //////////////
-  // Pipeline //
-  //////////////
-
-  laplacian->SetInput( input );
+  laplacian->SetInput( image );
   solver->SetInput( laplacian->GetOutput() );
   solver->Update();
 
-  ItType inpIt(input, input->GetLargestPossibleRegion());
-  ItType lapIt(laplacian->GetOutput(), laplacian->GetOutput()->GetLargestPossibleRegion());
-  ItType outIt(solver->GetOutput(), solver->GetOutput()->GetLargestPossibleRegion());
+  ImageType::Pointer solved = ImageType::New();
+  solved->Graft( solver->GetOutput() );
 
-  for (inpIt.GoToBegin(), lapIt.GoToBegin(), outIt.GoToBegin();
-       !inpIt.IsAtEnd();
-       ++inpIt, ++lapIt, ++outIt)
-    {
-    std::cout << inpIt.Get() << std::endl;
-    std::cout << lapIt.Get() << std::endl;
-    std::cout << outIt.Get() << std::endl << std::endl;
-    }
+  subtract->SetInput1( image );
+  subtract->SetInput2( solved );
+
+  stats->SetInput( subtract->GetOutput() );
+  stats->Update();
+
+  std::cout << "MEAN: " << stats->GetMean() << std::endl;
+  std::cout << "MIN: " << stats->GetMinimum() << std::endl;
+  std::cout << "MAX: " << stats->GetMaximum() << std::endl;
+  std::cout << "VARIANCE: " << stats->GetVariance() << std::endl;
+
+//  ImageType::Pointer input = ImageType::New();
+//
+//  const ImageType::RegionType region({0,0},{10,10});
+//  input->SetRegions( region );
+//  input->Allocate();
+//  input->FillBuffer(0);
+//
+//  ItType inIt(input, input->GetLargestPossibleRegion());
+//  for (inIt.GoToBegin(); !inIt.IsAtEnd(); ++inIt)
+//    inIt.Set(pow(inIt.GetIndex()[1]-5,2));
+//
+//  //////////////
+//  // Pipeline //
+//  //////////////
+//
+//  laplacian->SetInput( input );
+//  solver->SetInput( laplacian->GetOutput() );
+//  solver->Update();
+//
+//  ItType inpIt(input, input->GetLargestPossibleRegion());
+//  ItType lapIt(laplacian->GetOutput(), laplacian->GetOutput()->GetLargestPossibleRegion());
+//  ItType outIt(solver->GetOutput(), solver->GetOutput()->GetLargestPossibleRegion());
+//
+//  for (inpIt.GoToBegin(), lapIt.GoToBegin(), outIt.GoToBegin();
+//       !inpIt.IsAtEnd();
+//       ++inpIt, ++lapIt, ++outIt)
+//    {
+//    std::cout << inpIt.Get() << std::endl;
+//    std::cout << lapIt.Get() << std::endl;
+//    std::cout << outIt.Get() << std::endl << std::endl;
+//    }
 
   ////////////
   // Basics //
