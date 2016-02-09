@@ -25,7 +25,7 @@ itk_add_test(NAME itkDCTImageFilterTest
   COMMAND ${itk-module}TestDriver itkDCTImageFilterTest )
 itk_add_test(NAME itkDCTPhaseUnwrappingImageFilterTest
   COMMAND ${itk-module}TestDriver itkDCTPhaseUnwrappingImageFilterTest
-    DATA{Input//swi_wrapped.vtk} DATA{Input//swi_unwrapped_dct.vtk} )
+    DATA{Input//swi_wrapped.mha} DATA{Input//swi_unwrapped_dct.vtk} )
 itk_add_test(NAME itkIndexValuePairTest
   COMMAND ${itk-module}TestDriver itkIndexValuePairTest )
 itk_add_test(NAME itkItohPhaseUnwrappingImageFilterTest
