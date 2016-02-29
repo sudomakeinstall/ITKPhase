@@ -17,7 +17,7 @@ Set(ITK${itk-module}Tests
   itkWrappedPhaseLaplacianImageFilterTest.cxx
   itkWrapPhaseFunctorTest.cxx
   itkWrapPhaseImageFilterTest.cxx
-  itkTernaryOperatorImageFilterTest.cxx
+#  itkTernaryOperatorImageFilterTest.cxx
 )
 
 CreateTestDriver(${itk-module}  "${${itk-module}-Test_LIBRARIES}" "${ITK${itk-module}Tests}")
@@ -46,5 +46,5 @@ itk_add_test(NAME itkWrappedPhaseLaplacianImageFilterTest
   COMMAND ${itk-module}TestDriver itkWrappedPhaseLaplacianImageFilterTest )
 itk_add_test(NAME itkWrapPhaseFunctorTest
   COMMAND ${itk-module}TestDriver itkWrapPhaseFunctorTest )
-itk_add_test(NAME itkTernaryOperatorImageFilterTest
-  COMMAND ${itk-module}TestDriver itkTernaryOperatorImageFilterTest )
+#itk_add_test(NAME itkTernaryOperatorImageFilterTest
+#  COMMAND ${itk-module}TestDriver itkTernaryOperatorImageFilterTest )
