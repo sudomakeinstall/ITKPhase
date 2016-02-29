@@ -6,7 +6,7 @@ Set(ITK${itk-module}Tests
 #  itkHelmholtzDecompositionImageFilterTest.cxx
   itkIndexValuePairTest.cxx
   itkItohPhaseUnwrappingImageFilterTest.cxx
-  itkDCTPoissonSolverImageFilterTest.cxx
+#  itkDCTPoissonSolverImageFilterTest.cxx
   itkPhaseDerivativeVarianceImageFilterTest.cxx
   itkPhaseExamplesImageSourceTest.cxx
 #  itkPhaseImageToImageFilterTest.cxx
@@ -17,7 +17,6 @@ Set(ITK${itk-module}Tests
   itkWrappedPhaseLaplacianImageFilterTest.cxx
   itkWrapPhaseFunctorTest.cxx
   itkWrapPhaseImageFilterTest.cxx
-#  itkTernaryOperatorImageFilterTest.cxx
 )
 
 CreateTestDriver(${itk-module}  "${${itk-module}-Test_LIBRARIES}" "${ITK${itk-module}Tests}")
@@ -31,9 +30,9 @@ itk_add_test(NAME itkIndexValuePairTest
   COMMAND ${itk-module}TestDriver itkIndexValuePairTest )
 itk_add_test(NAME itkItohPhaseUnwrappingImageFilterTest
   COMMAND ${itk-module}TestDriver itkItohPhaseUnwrappingImageFilterTest )
-itk_add_test(NAME itkDCTPoissonSolverImageFilterTest
-  COMMAND ${itk-module}TestDriver itkDCTPoissonSolverImageFilterTest
-    DATA{${ITK_DATA_ROOT}/Input/CellsFluorescence1.png} )
+#itk_add_test(NAME itkDCTPoissonSolverImageFilterTest
+#  COMMAND ${itk-module}TestDriver itkDCTPoissonSolverImageFilterTest
+#    DATA{${ITK_DATA_ROOT}/Input/CellsFluorescence1.png} )
 itk_add_test(NAME itkPhaseDerivativeVarianceImageFilterTest
   COMMAND ${itk-module}TestDriver itkPhaseDerivativeVarianceImageFilterTest )
 itk_add_test(NAME itkPhaseExamplesImageSourceTest
@@ -46,5 +45,3 @@ itk_add_test(NAME itkWrappedPhaseLaplacianImageFilterTest
   COMMAND ${itk-module}TestDriver itkWrappedPhaseLaplacianImageFilterTest )
 itk_add_test(NAME itkWrapPhaseFunctorTest
   COMMAND ${itk-module}TestDriver itkWrapPhaseFunctorTest )
-#itk_add_test(NAME itkTernaryOperatorImageFilterTest
-#  COMMAND ${itk-module}TestDriver itkTernaryOperatorImageFilterTest )
