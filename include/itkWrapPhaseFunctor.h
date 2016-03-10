@@ -54,8 +54,7 @@ public:
 
   inline TOutputPixel operator()(const TInputPixel & pix) const
   {
-    return static_cast<TOutputPixel>(atan2(sin(static_cast<double>(pix)), cos(static_cast<double>(pix))));
-//  return static_cast<TOutputPixel>(vnl_math::angle_minuspi_to_pi(static_cast<double>(pix)));
+    return static_cast<TOutputPixel>(vnl_math::angle_minuspi_to_pi(static_cast<double>(pix)));
   }
   
 };
