@@ -19,7 +19,7 @@
 #include "itkHelmholtzDecompositionImageFilter.h"
 #include "itkTestingMacros.h"
 
-int itkHelmholtzDecompositionImageFilterTest(int argc, char **argv)
+int itkHelmholtzDecompositionImageFilterTest(int argc, char *argv[])
 {
 
   if (argc != 1)

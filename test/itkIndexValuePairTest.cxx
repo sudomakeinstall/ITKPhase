@@ -22,7 +22,8 @@
 #include <cstdlib>
 #include <itkTestingMacros.h>
 
-int itkIndexValuePairTest( int argc, char **argv ) {
+int itkIndexValuePairTest( int argc, char *argv[])
+{
 
   if (argc != 1)
     {

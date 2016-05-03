@@ -25,7 +25,7 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkTestingComparisonImageFilter.h"
 
-int itkDCTPhaseUnwrappingImageFilterTest(int argc, char **argv)
+int itkDCTPhaseUnwrappingImageFilterTest(int argc, char *argv[])
 {
   
   if (argc != 3)

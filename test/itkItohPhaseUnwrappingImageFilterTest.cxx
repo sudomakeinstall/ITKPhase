@@ -19,7 +19,7 @@
 #include "itkItohPhaseUnwrappingImageFilter.h"
 #include "itkTestingMacros.h"
 
-int itkItohPhaseUnwrappingImageFilterTest(int argc, char **argv)
+int itkItohPhaseUnwrappingImageFilterTest(int argc, char *argv[])
 {
 
   if (argc != 1)

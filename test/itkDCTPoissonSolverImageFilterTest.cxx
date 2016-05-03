@@ -23,7 +23,7 @@
 #include "itkStatisticsImageFilter.h"
 #include "itkTestingMacros.h"
 
-int itkDCTPoissonSolverImageFilterTest(int argc, char **argv)
+int itkDCTPoissonSolverImageFilterTest(int argc, char *argv[])
 {
   
   if (argc != 2)

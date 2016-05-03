@@ -30,7 +30,7 @@ static bool same(double a, double b)
   return !different(a, b);
 }
 
-int itkDCTImageFilterTest(int argc, char **argv)
+int itkDCTImageFilterTest(int argc, char *argv[])
 {
 
   if (argc != 1)

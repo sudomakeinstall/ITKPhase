@@ -20,7 +20,7 @@
 #include "itkPhaseQualityImageFilter.h"
 #include "itkTestingMacros.h"
 
-int itkQualityGuidedPhaseUnwrappingImageFilterTest(int argc, char **argv)
+int itkQualityGuidedPhaseUnwrappingImageFilterTest(int argc, char *argv[])
 {
 
   if (1 != argc)

@@ -20,7 +20,7 @@
 #include "itkTestingMacros.h"
 #include "vnl/vnl_math.h"
 
-int itkPhaseExamplesImageSourceTest(int argc, char **argv)
+int itkPhaseExamplesImageSourceTest(int argc, char *argv[])
 {
 
   if (argc != 1)

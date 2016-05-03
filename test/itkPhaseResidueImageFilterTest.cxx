@@ -19,7 +19,7 @@
 #include "itkPhaseResidueImageFilter.h"
 #include "itkTestingMacros.h"
 
-int itkPhaseResidueImageFilterTest(int argc, char **argv)
+int itkPhaseResidueImageFilterTest(int argc, char *argv[])
 {
 
   if (argc != 1)

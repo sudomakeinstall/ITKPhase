@@ -22,7 +22,7 @@
 #include "itkLaplacianImageFilter.h"
 #include "itkWrapPhaseSymmetricImageFilter.h"
 
-int itkWrappedPhaseLaplacianImageFilterTest(int argc, char **argv)
+int itkWrappedPhaseLaplacianImageFilterTest(int argc, char *argv[])
 {
 
   if (argc != 1)

@@ -26,7 +26,7 @@ static bool different(double a, double b)
 return std::fabs(a-b) > 10e-6;
 }
 
-int itkWrapPhaseSymmetricFunctorTest(int argc, char **argv)
+int itkWrapPhaseSymmetricFunctorTest(int argc, char *argv[])
 {
 
   if (argc != 1)
