@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef itkWrapPhaseSymmetricFunctor_h
-#define itkWrapPhaseSymmetricFunctor_h
+#ifndef itkWrapPhasePositiveFunctor_h
+#define itkWrapPhasePositiveFunctor_h
 
 #include <vnl/vnl_math.h>
 
@@ -24,11 +24,11 @@ namespace itk
 {
 namespace Functor
 {
-/** \class WrapPhaseSymmetricFunctor
+/** \class WrapPhasePositiveFunctor
  *  \ingroup ITKPhase
- *  \brief Unary functor that wraps the input value into the range [-pi to pi).
+ *  \brief Unary functor that wraps the input value into the range [0 to 2pi).
  *
- * This functor is used by WrapPhaseSymmetricImageFilter as well as filters that inherit
+ * This functor is used by WrapPhasePositiveImageFilter as well as filters that inherit
  * from PhaseImageToImageFilter.  The input value is cast to double, wrapped, and then
  * cast to the output pixel type.
  *
@@ -36,25 +36,25 @@ namespace Functor
 
 
 template< typename TInputPixel, typename TOutputPixel = TInputPixel >
-class WrapPhaseSymmetricFunctor
+class WrapPhasePositiveFunctor
 {
 public:
-  WrapPhaseSymmetricFunctor() {}
-  ~WrapPhaseSymmetricFunctor() {}
+  WrapPhasePositiveFunctor() {}
+  ~WrapPhasePositiveFunctor() {}
   
-  bool operator!=(const WrapPhaseSymmetricFunctor &) const
+  bool operator!=(const WrapPhasePositiveFunctor &) const
   {
     return false;
   }
 
-  bool operator==(const WrapPhaseSymmetricFunctor & other) const
+  bool operator==(const WrapPhasePositiveFunctor & other) const
   {
     return !( *this != other );
   }
 
   inline TOutputPixel operator()(const TInputPixel & pix) const
   {
-    return static_cast<TOutputPixel>(vnl_math::angle_minuspi_to_pi(static_cast<double>(pix)));
+    return static_cast<TOutputPixel>(vnl_math::angle_0_to_2pi(static_cast<double>(pix)));
   }
   
 };
