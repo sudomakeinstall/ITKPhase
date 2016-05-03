@@ -25,7 +25,7 @@
 #include "itkPasteImageFilter.h"
 #include "itkRegionOfInterestImageFilter.h"
 #include "itkAdditiveGaussianNoiseImageFilter.h"
-#include "itkWrapPhaseImageFilter.h"
+#include "itkWrapPhaseSymmetricImageFilter.h"
 #include "vnl/vnl_math.h"
 
 namespace itk {
@@ -100,7 +100,7 @@ private:
   typedef AdditiveGaussianNoiseImageFilter< TImage >    NoiseType;
   typedef RegionOfInterestImageFilter< TImage, TImage > ROIType;
   typedef PasteImageFilter< TImage >                    PasteType;
-  typedef WrapPhaseImageFilter< TImage >                WrapType;
+  typedef WrapPhaseSymmetricImageFilter< TImage >       WrapType;
  
   /** Instantiate component filters */
   typename NoiseType::Pointer m_NoiseFilter;

@@ -42,7 +42,9 @@ int itkPhaseExamplesImageSourceTest(int argc, char **argv)
   // Basics //
   ////////////
 
-  EXERCISE_BASIC_OBJECT_METHODS( filter, FilterType ); 
+  EXERCISE_BASIC_OBJECT_METHODS( filter,
+                                 PhaseExamplesImageSource,
+                                 ImageSource );
 
   /////////////////////
   // Set/Get Methods //

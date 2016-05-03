@@ -16,10 +16,10 @@
  *
  *=========================================================================*/
 
-#include "itkWrapPhaseImageFilter.h"
+#include "itkWrapPhaseSymmetricImageFilter.h"
 #include "itkTestingMacros.h"
 
-int itkWrapPhaseImageFilterTest(int argc, char **argv)
+int itkWrapPhaseSymmetricImageFilterTest(int argc, char *argv[])
 {
 
   if (argc != 1)
@@ -33,7 +33,7 @@ int itkWrapPhaseImageFilterTest(int argc, char **argv)
 
   typedef itk::Image< PixelType, Dimension > ImageType;
 
-  typedef itk::WrapPhaseImageFilter< ImageType > FilterType;
+  typedef itk::WrapPhaseSymmetricImageFilter< ImageType > FilterType;
   
   FilterType::Pointer filter = FilterType::New();
 
@@ -41,7 +41,9 @@ int itkWrapPhaseImageFilterTest(int argc, char **argv)
   // Basics //
   ////////////
 
-  EXERCISE_BASIC_OBJECT_METHODS( filter, FilterType ); 
+  EXERCISE_BASIC_OBJECT_METHODS( filter,
+                                 WrapPhaseSymmetricImageFilter,
+                                 UnaryFunctorImageFilter );
 
   /////////////////////
   // Set/Get Methods //

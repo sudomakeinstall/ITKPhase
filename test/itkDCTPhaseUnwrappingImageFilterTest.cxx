@@ -20,7 +20,7 @@
 #include "itkTestingMacros.h"
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkNeighborhoodIterator.h"
-#include "itkWrapPhaseFunctor.h"
+#include "itkWrapPhaseSymmetricFunctor.h"
 #include "itkImageFileReader.h"
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkTestingComparisonImageFilter.h"
@@ -44,7 +44,7 @@ int itkDCTPhaseUnwrappingImageFilterTest(int argc, char **argv)
   typedef itk::DCTPhaseUnwrappingImageFilter< ImageType >             UnwrapType;
   typedef itk::ImageRegionIteratorWithIndex< ImageType >              ItType;
   typedef itk::NeighborhoodIterator< ImageType >                      NItType;
-  typedef itk::Functor::WrapPhaseFunctor< PixelType >                 WrapType;
+  typedef itk::Functor::WrapPhaseSymmetricFunctor< PixelType >        WrapType;
   typedef itk::ImageFileReader< ImageType >                           ReaderType;
   typedef itk::Testing::ComparisonImageFilter< ImageType, ImageType > DifferenceType;
 
@@ -107,7 +107,9 @@ int itkDCTPhaseUnwrappingImageFilterTest(int argc, char **argv)
     // Basics //
     ////////////
   
-    EXERCISE_BASIC_OBJECT_METHODS( unwrap, UnwrapType ); 
+    EXERCISE_BASIC_OBJECT_METHODS( unwrap,
+                                   DCTPhaseUnwrappingImageFilter,
+                                   PhaseImageToImageFilter );
 
     }
 

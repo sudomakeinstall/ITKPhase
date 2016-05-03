@@ -16,45 +16,48 @@
  *
  *=========================================================================*/
 
-#ifndef itkWrapPhaseImageFilter_h
-#define itkWrapPhaseImageFilter_h
+#ifndef itkWrapPhaseSymmetricImageFilter_h
+#define itkWrapPhaseSymmetricImageFilter_h
 
 #include "itkUnaryFunctorImageFilter.h"
-#include "itkWrapPhaseFunctor.h"
+#include "itkWrapPhaseSymmetricFunctor.h"
 
 namespace itk
 {
 
-/** \class WrapPhaseImageFilter
+/** \class WrapPhaseSymmetricImageFilter
  *  \ingroup ITKPhase
- * \brief Wraps the input image into the range -pi to pi.
+ *  \brief Image filter that wraps the input value into the range [-pi to pi).
  *
- * Applies the following operation, pixelwise across the image: atan2(sin(x), cos(x)).
+ * This image filter applies the itk::WrapPhaseSymmetricFunctor pixelwise
+ * across the image.
  *
  */
 template< class TInputImage, class TOutputImage = TInputImage >
-class WrapPhaseImageFilter:
+class WrapPhaseSymmetricImageFilter:
   public
   UnaryFunctorImageFilter< TInputImage,
                            TOutputImage,
-                           Functor::WrapPhaseFunctor< typename TInputImage::PixelType,
-                                                      typename TOutputImage::PixelType > >
+                           Functor::WrapPhaseSymmetricFunctor<
+                             typename TInputImage::PixelType,
+                             typename TOutputImage::PixelType > >
 {
 public:
   /** Standard class typedefs. */
-  typedef WrapPhaseImageFilter       Self;
+  typedef WrapPhaseSymmetricImageFilter                                   Self;
   typedef UnaryFunctorImageFilter< TInputImage,
                                    TOutputImage,
-                                   Functor::WrapPhaseFunctor< typename TInputImage::PixelType,
-                                                              typename TOutputImage::PixelType > > Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
+                                   Functor::WrapPhaseSymmetricFunctor<
+                                     typename TInputImage::PixelType,
+                                     typename TOutputImage::PixelType > > Superclass;
+  typedef SmartPointer< Self >                                            Pointer;
+  typedef SmartPointer< const Self >                                      ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
   /** Runtime information support. */
-  itkTypeMacro(WrapPhaseImageFilter,
+  itkTypeMacro(WrapPhaseSymmetricImageFilter,
                UnaryFunctorImageFilter);
 
   #ifdef ITK_USE_CONCEPT_CHECKING
@@ -71,11 +74,11 @@ public:
   #endif
 
 protected:
-  WrapPhaseImageFilter() {}
-  virtual ~WrapPhaseImageFilter() {}
+  WrapPhaseSymmetricImageFilter() {}
+  virtual ~WrapPhaseSymmetricImageFilter() {}
 
 private:
-  WrapPhaseImageFilter(const Self &); //purposely not implemented
+  WrapPhaseSymmetricImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
 };
 } // end namespace itk

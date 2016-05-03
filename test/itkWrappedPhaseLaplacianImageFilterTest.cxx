@@ -20,7 +20,7 @@
 #include "itkTestingMacros.h"
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkLaplacianImageFilter.h"
-#include "itkWrapPhaseImageFilter.h"
+#include "itkWrapPhaseSymmetricImageFilter.h"
 
 int itkWrappedPhaseLaplacianImageFilterTest(int argc, char **argv)
 {
@@ -40,7 +40,7 @@ int itkWrappedPhaseLaplacianImageFilterTest(int argc, char **argv)
   typedef double                                             PixelType;
   typedef itk::Image< PixelType, Dimension >                 ImageType;
   typedef itk::ImageRegionIteratorWithIndex< ImageType >     ItType;
-  typedef itk::WrapPhaseImageFilter< ImageType >             WrapType;
+  typedef itk::WrapPhaseSymmetricImageFilter< ImageType >    WrapType;
   typedef itk::LaplacianImageFilter< ImageType, ImageType >  LaplacianType;
   typedef itk::WrappedPhaseLaplacianImageFilter< ImageType > WrappedLaplacianType;
   
@@ -112,7 +112,9 @@ int itkWrappedPhaseLaplacianImageFilterTest(int argc, char **argv)
   // Basics //
   ////////////
 
-  EXERCISE_BASIC_OBJECT_METHODS( wrappedLaplacian, WrappedLaplacianType ); 
+  EXERCISE_BASIC_OBJECT_METHODS( wrappedLaplacian,
+                                 WrappedPhaseLaplacianImageFilter,
+                                 WrappedPhaseDifferencesBaseImageFilter );
 
   /////////////////////
   // Set/Get Methods //

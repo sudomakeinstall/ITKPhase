@@ -15,8 +15,8 @@ Set(ITK${itk-module}Tests
   itkQualityGuidedPhaseUnwrappingImageFilterTest.cxx
 #  itkWrappedPhaseDifferencesBaseImageFilterTest.cxx
   itkWrappedPhaseLaplacianImageFilterTest.cxx
-  itkWrapPhaseFunctorTest.cxx
-  itkWrapPhaseImageFilterTest.cxx
+  itkWrapPhaseSymmetricFunctorTest.cxx
+  itkWrapPhaseSymmetricImageFilterTest.cxx
 )
 
 CreateTestDriver(${itk-module}  "${${itk-module}-Test_LIBRARIES}" "${ITK${itk-module}Tests}")
@@ -43,5 +43,7 @@ itk_add_test(NAME itkPhaseResidueImageFilterTest
   COMMAND ${itk-module}TestDriver itkPhaseResidueImageFilterTest )
 itk_add_test(NAME itkWrappedPhaseLaplacianImageFilterTest
   COMMAND ${itk-module}TestDriver itkWrappedPhaseLaplacianImageFilterTest )
-itk_add_test(NAME itkWrapPhaseFunctorTest
-  COMMAND ${itk-module}TestDriver itkWrapPhaseFunctorTest )
+itk_add_test(NAME itkWrapPhaseSymmetricFunctorTest
+  COMMAND ${itk-module}TestDriver itkWrapPhaseSymmetricFunctorTest )
+itk_add_test(NAME itkWrapPhaseSymmetricImageFilterTest
+  COMMAND ${itk-module}TestDriver itkWrapPhaseSymmetricImageFilterTest )

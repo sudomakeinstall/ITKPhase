@@ -41,7 +41,9 @@ int itkPhaseResidueImageFilterTest(int argc, char **argv)
   // Basics //
   ////////////
 
-  EXERCISE_BASIC_OBJECT_METHODS( filter, FilterType ); 
+  EXERCISE_BASIC_OBJECT_METHODS( filter,
+                                 PhaseResidueImageFilter,
+                                 PhaseImageToImageFilter );
 
   /////////////////////
   // Set/Get Methods //

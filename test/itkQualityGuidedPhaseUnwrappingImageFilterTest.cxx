@@ -47,7 +47,7 @@ int itkQualityGuidedPhaseUnwrappingImageFilterTest(int argc, char **argv)
   // Basics //
   ////////////
 
-  EXERCISE_BASIC_OBJECT_METHODS( filter, FilterType ); 
+  EXERCISE_BASIC_OBJECT_METHODS( filter, FilterType, FilterType::Superclass ); 
 
   /////////////////////
   // Set/Get Methods //

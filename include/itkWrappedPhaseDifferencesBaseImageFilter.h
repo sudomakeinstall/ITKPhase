@@ -28,13 +28,13 @@
 
 // Custom
 #include "itkPhaseImageToImageFilter.h"
-#include "itkWrapPhaseImageFilter.h"
+#include "itkWrapPhaseSymmetricImageFilter.h"
 
 namespace itk
 {
 /** \class WrappedPhaseDifferencesBaseImageFilter
  *  \ingroup ITKPhase
- * \brief Base class for images dealing with wrapped phase derivatives.
+ *  \brief Base class for images dealing with wrapped phase derivatives.
  *
  * Provides useful methods for dealing with wrapped phase differences.  The
  * DirectionalDerivative(unsigned int i) method returns wrapped phase differences
@@ -85,11 +85,11 @@ protected:
   ~WrappedPhaseDifferencesBaseImageFilter(){}
 
   // Declare the component filter types:
-  typedef CyclicShiftImageFilter< TInputImage >            ShiftType;
-  typedef SubtractImageFilter< TInputImage, TInputImage >  SubtractType;
-  typedef WrapPhaseImageFilter< TInputImage, TInputImage > WrapType;
-  typedef ImageRegionIterator< TInputImage >               ItType;
-  typedef ComposeImageFilter< TInputImage, TVectorImage >  ComposeType;
+  typedef CyclicShiftImageFilter< TInputImage >           ShiftType;
+  typedef SubtractImageFilter< TInputImage >              SubtractType;
+  typedef WrapPhaseSymmetricImageFilter< TInputImage >    WrapType;
+  typedef ImageRegionIterator< TInputImage >              ItType;
+  typedef ComposeImageFilter< TInputImage, TVectorImage > ComposeType;
  
   typename TInputImage::Pointer DirectionalDerivative(unsigned int i);
   TVectorPointer ComposeVector();

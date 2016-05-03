@@ -22,7 +22,7 @@
 #include "itkImageToImageFilter.h"
 #include "itkObjectFactory.h"
 #include "vnl/vnl_math.h"
-#include "itkWrapPhaseFunctor.h"
+#include "itkWrapPhaseSymmetricFunctor.h"
  
 namespace itk
 {
@@ -46,7 +46,7 @@ public:
   typedef SmartPointer< const Self >                      ConstPointer;
   
   // Other typedefs
-  typedef Functor::WrapPhaseFunctor< typename TInputImage::PixelType > WrapFunctorType;
+  typedef Functor::WrapPhaseSymmetricFunctor< typename TInputImage::PixelType > WrapFunctorType;
  
   // Method for creation through the object factory
   itkNewMacro(Self);

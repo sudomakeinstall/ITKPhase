@@ -41,7 +41,9 @@ int itkPhaseQualityImageFilterTest(int argc, char **argv)
   // Basics //
   ////////////
 
-  EXERCISE_BASIC_OBJECT_METHODS( filter, FilterType ); 
+  EXERCISE_BASIC_OBJECT_METHODS( filter,
+                                 PhaseQualityImageFilter,
+                                 ImageToImageFilter );
 
   /////////////////////
   // Set/Get Methods //

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef itkWrapPhaseFunctor_h
-#define itkWrapPhaseFunctor_h
+#ifndef itkWrapPhaseSymmetricFunctor_h
+#define itkWrapPhaseSymmetricFunctor_h
 
 #include <vnl/vnl_math.h>
 #include <math.h>
@@ -25,29 +25,30 @@ namespace itk
 {
 namespace Functor
 {
-/** \class WrapPhaseFunctor
+/** \class WrapPhaseSymmetricFunctor
  *  \ingroup ITKPhase
- *  \brief Unary functor that wraps the input value into the range -pi to pi.
+ *  \brief Unary functor that wraps the input value into the range [-pi to pi).
  *
- * This functor is used by WrapPhaseImageFilter as well as filters that inherit
- * from PhaseImageToImageFilter.
+ * This functor is used by WrapPhaseSymmetricImageFilter as well as filters that inherit
+ * from PhaseImageToImageFilter.  The input value is cast to double, wrapped, and then
+ * cast to the output pixel type.
  *
  */
 
 
 template< typename TInputPixel, typename TOutputPixel = TInputPixel >
-class WrapPhaseFunctor
+class WrapPhaseSymmetricFunctor
 {
 public:
-  WrapPhaseFunctor() {}
-  ~WrapPhaseFunctor() {}
+  WrapPhaseSymmetricFunctor() {}
+  ~WrapPhaseSymmetricFunctor() {}
   
-  bool operator!=(const WrapPhaseFunctor &) const
+  bool operator!=(const WrapPhaseSymmetricFunctor &) const
   {
     return false;
   }
 
-  bool operator==(const WrapPhaseFunctor & other) const
+  bool operator==(const WrapPhaseSymmetricFunctor & other) const
   {
     return !( *this != other );
   }

@@ -26,16 +26,16 @@
 /** Custom headers */
 #include "itkPhaseImageToImageFilter.h"
 #include "itkDCTPhaseUnwrappingImageFilter.h"
-#include "itkWrapPhaseImageFilter.h"
+#include "itkWrapPhaseSymmetricImageFilter.h"
 
 namespace itk {
 
 /** \class HelmholtzDecompositionImageFilter
  *  \ingroup ITKPhase
- * \brief Decomposes a wrapped phase image into its rotational (curl) and irrotational
+ *  \brief Decomposes a wrapped phase image into its rotational (curl) and irrotational
  * (divergence) components.
  *
- * This filter assumes a phase image wrapped into the range of -pi to pi as input
+ * This filter assumes a phase image wrapped into the range [-pi to pi) as input
  * and provides the rotational and irrotational components of the phase as outputs,
  * through the GetRotational() and GetIrrotational() methods, respectively.
  *
@@ -92,7 +92,7 @@ protected:
   /** Declare component filter types */
   typedef DCTPhaseUnwrappingImageFilter< TInputImage > UnwrapType;
   typedef SubtractImageFilter< TInputImage >           SubtractType;
-  typedef WrapPhaseImageFilter< TInputImage >          WrapType;
+  typedef WrapPhaseSymmetricImageFilter< TInputImage > WrapType;
 
   /** Used to create the output images when the GetOutput(n) method is called. */
   DataObject::Pointer MakeOutput(long unsigned int idx); 

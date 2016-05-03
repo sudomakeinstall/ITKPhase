@@ -16,22 +16,17 @@
  *
  *=========================================================================*/
 
-#include "itkWrapPhaseFunctor.h"
+#include "itkWrapPhaseSymmetricFunctor.h"
 #include "itkNumericTraits.h"
 #include "vnl/vnl_math.h"
 #include <iostream>
 
 static bool different(double a, double b)
 {
-// TODO: Wrap functor uses a simplistic algorithm which results in numerical instability
-// Differences are > epsilon from the numeric traits
-// Consider the following alternate implementation:
-// http://stackoverflow.com/questions/4633177/c-how-to-wrap-a-float-to-the-interval-pi-pi
-// return std::fabs(a-b) > itk::NumericTraits< double >::epsilon();
 return std::fabs(a-b) > 10e-6;
 }
 
-int itkWrapPhaseFunctorTest(int argc, char **argv)
+int itkWrapPhaseSymmetricFunctorTest(int argc, char **argv)
 {
 
   if (argc != 1)
@@ -40,7 +35,7 @@ int itkWrapPhaseFunctorTest(int argc, char **argv)
     return EXIT_FAILURE;
     }
 
-  itk::Functor::WrapPhaseFunctor< double > wrapFunc;
+  itk::Functor::WrapPhaseSymmetricFunctor< double > wrapFunc;
   
   if (different( wrapFunc( 3.0 ), 3.0) ) {
     std::cerr << "Incorrect wrapping of 3.0." << std::endl;

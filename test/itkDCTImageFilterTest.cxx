@@ -68,7 +68,8 @@ int itkDCTImageFilterTest(int argc, char **argv)
   // Basics //
   ////////////
 
-  EXERCISE_BASIC_OBJECT_METHODS( forward, FilterType ); 
+  // Arguments: Object, Class, Superclass
+  EXERCISE_BASIC_OBJECT_METHODS( forward, DCTImageFilter, ImageToImageFilter ); 
 
   /////////////////////
   // Set/Get Methods //
