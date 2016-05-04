@@ -54,7 +54,7 @@ public:
   // Run-time type information (and related methods)
   itkTypeMacro(PhaseImageToImageFilter, ImageToImageFilter);
 
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  void PrintSelf( std::ostream& os, Indent indent ) const ITK_OVERRIDE;
  
 protected:
 

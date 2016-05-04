@@ -51,7 +51,7 @@ public:
   itkTypeMacro(PCGPhaseUnwrappingImageFilter, PhaseImageToImageFilter);
   
   /** Display */
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  void PrintSelf( std::ostream& os, Indent indent ) const ITK_OVERRIDE;
 
   itkSetMacro( MaximumIterations, unsigned int );
   itkGetConstMacro( MaximumIterations, unsigned int ); 
@@ -74,7 +74,7 @@ protected:
   typedef ImageRegionIterator< TImage >                      ItType;
 
   /** Does the real work. */
-  void GenerateData();
+  void GenerateData() ITK_OVERRIDE;
  
 private:
 

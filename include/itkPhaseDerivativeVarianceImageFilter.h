@@ -101,7 +101,7 @@ public:
 //  itkGetConstMacro(ThresholdValue, double );
   
   /** Display */
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  void PrintSelf( std::ostream& os, Indent indent ) const ITK_OVERRIDE;
  
 protected:
 
@@ -112,7 +112,7 @@ protected:
   typedef ImageRegionIterator< TInputImage >                       ItType;
 //  typedef MultiplyImageFilter< TInputImage, TInputImage >          MultiplyType;
 //  typedef RescaleIntensityImageFilter< TInputImage, TOutputImage > RescaleType;
-  virtual void GenerateData();
+  virtual void GenerateData() ITK_OVERRIDE;
  
 private:
 

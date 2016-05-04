@@ -74,7 +74,7 @@ public:
   itkGetConstMacro(Weighted, bool);
   
   /** Display */
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  void PrintSelf( std::ostream& os, Indent indent ) const ITK_OVERRIDE;
  
 protected:
 
@@ -82,7 +82,7 @@ protected:
   ~WrappedPhaseLaplacianImageFilter(){}
  
   /** Does the real work. */
-  virtual void GenerateData();
+  virtual void GenerateData() ITK_OVERRIDE;
 
 private:
 

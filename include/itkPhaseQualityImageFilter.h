@@ -86,7 +86,7 @@ public:
   itkGetConstMacro(QualityMetric, QualityType);
 
   /** Display */
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  void PrintSelf( std::ostream& os, Indent indent ) const ITK_OVERRIDE;
  
 protected:
 
@@ -97,7 +97,7 @@ protected:
   typedef RescaleIntensityImageFilter< TInputImage, TOutputImage >       RescaleType;
   typedef BinaryThresholdImageFilter< TOutputImage, TOutputImage >       ThresholdType;
   typedef PhaseDerivativeVarianceImageFilter< TInputImage, TInputImage > PDVType;
-  virtual void GenerateData();
+  virtual void GenerateData() ITK_OVERRIDE;
  
 private:
 

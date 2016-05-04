@@ -92,7 +92,7 @@ public:
   itkTypeMacro(DCTImageFilter, ImageToImageFilter);
 
   /** Display */
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  void PrintSelf( std::ostream& os, Indent indent ) const ITK_OVERRIDE;
 
 protected: 
 
@@ -105,7 +105,7 @@ protected:
   //  Declare the component filter types:
   typedef DivideImageFilter< TInputImage, TInputImage, TInputImage > DivideType;
         
-  void GenerateData();
+  void GenerateData() ITK_OVERRIDE;
 
 private: 
 

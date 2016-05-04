@@ -73,14 +73,14 @@ public:
   itkTypeMacro(DCTPhaseUnwrappingImageFilter, PhaseImageToImageFilter);
 
   /** Display */
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  void PrintSelf( std::ostream& os, Indent indent ) const ITK_OVERRIDE;
 
 protected:
 
   DCTPhaseUnwrappingImageFilter();
   ~DCTPhaseUnwrappingImageFilter(){}
   
-  void GenerateData();
+  void GenerateData() ITK_OVERRIDE;
 
 private:
 

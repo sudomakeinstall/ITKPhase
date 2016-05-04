@@ -79,7 +79,7 @@ public:
   TOutputImage* GetRotational();
   
   /** Display */
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  void PrintSelf( std::ostream& os, Indent indent ) const ITK_OVERRIDE;
  
 protected:
 
@@ -87,7 +87,7 @@ protected:
   ~HelmholtzDecompositionImageFilter(){}
 
   /** Does the real work. */
-  virtual void GenerateData();
+  virtual void GenerateData() ITK_OVERRIDE;
 
   /** Declare component filter types */
   typedef DCTPhaseUnwrappingImageFilter< TInputImage > UnwrapType;

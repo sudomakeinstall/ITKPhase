@@ -79,7 +79,7 @@ public:
   itkTypeMacro(PhaseResidueImageFilter, PhaseImageToImageFilter);
   
   /** Display */
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  void PrintSelf( std::ostream& os, Indent indent ) const ITK_OVERRIDE;
  
 protected:
 
@@ -87,7 +87,7 @@ protected:
   ~PhaseResidueImageFilter(){}
   
   /** Does the real work. */
-  void GenerateData();
+  void GenerateData() ITK_OVERRIDE;
  
 private:
 

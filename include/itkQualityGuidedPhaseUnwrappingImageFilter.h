@@ -105,7 +105,7 @@ public:
   void SetQualityImage(const TInputImage*);
 
   /** Display */
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  void PrintSelf( std::ostream& os, Indent indent ) const ITK_OVERRIDE;
  
 protected:
 
@@ -113,7 +113,7 @@ protected:
   ~QualityGuidedPhaseUnwrappingImageFilter(){}
 
   /** Does the real work. */
-  void GenerateData();
+  void GenerateData() ITK_OVERRIDE;
 
   /** Declare set/get variables */
   IndexType m_TruePhase;

@@ -71,7 +71,7 @@ public:
   itkTypeMacro(DCTPoissonSolverImageFilter, ImageToImageFilter);
 
   /** Display */
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  void PrintSelf( std::ostream& os, Indent indent ) const ITK_OVERRIDE;
 
 protected:
 
@@ -81,7 +81,7 @@ protected:
   //  Iterators
   typedef itk::ImageRegionIteratorWithIndex< TInputImage > ItType;
   
-  void GenerateData();
+  void GenerateData() ITK_OVERRIDE;
 
 private:
 
