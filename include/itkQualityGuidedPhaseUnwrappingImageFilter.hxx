@@ -190,7 +190,7 @@ QualityGuidedPhaseUnwrappingImageFilter< TInputImage, TOutputImage >
     qualIt.SetLocation( activeIndex );
     
     // Find the adjoining offset (an adjoining pixel with unwrapped phase)
-    typename WorkNItType::SizeValueType adjoiningIndex;
+    typename WorkNItType::SizeValueType adjoiningIndex(0);
     
     for (typename OffsetVectorType::iterator it = offsetVector.begin();
          it != offsetVector.end();
