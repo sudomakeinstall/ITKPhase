@@ -8,6 +8,7 @@ itk_module(ITKPhase
     ITKFFT
     ITKThresholding
     ITKImageNoise
+    ITKImageGradient
   TEST_DEPENDS
     ITKTestKernel
     ITKImageFeature
