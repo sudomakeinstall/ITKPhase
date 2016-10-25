@@ -75,8 +75,7 @@ protected:
  
 private:
 
-  ItohPhaseUnwrappingImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);  //purposely not implemented
+  ITK_DISALLOW_COPY_AND_ASSIGN(ItohPhaseUnwrappingImageFilter);
  
 };
 } //namespace ITK

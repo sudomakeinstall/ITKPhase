@@ -91,8 +91,7 @@ protected:
  
 private:
 
-  PhaseResidueImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);  //purposely not implemented
+  ITK_DISALLOW_COPY_AND_ASSIGN(PhaseResidueImageFilter);
  
   typedef ConstNeighborhoodIterator< TInputImage > ConstItType;
   typedef ImageRegionIterator< TOutputImage >      ItType;

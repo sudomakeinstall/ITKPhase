@@ -99,8 +99,7 @@ protected:
  
 private:
 
-  HelmholtzDecompositionImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);  //purposely not implemented
+  ITK_DISALLOW_COPY_AND_ASSIGN(HelmholtzDecompositionImageFilter);
   
   /** Instantiate component filters */
   typename UnwrapType::Pointer   m_Unwrap;

@@ -101,8 +101,7 @@ protected:
  
 private:
 
-  PhaseQualityImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);  //purposely not implemented
+  ITK_DISALLOW_COPY_AND_ASSIGN(PhaseQualityImageFilter);
   
   typename PDVType::Pointer       m_PDVFilter;
   typename MultiplyType::Pointer  m_NegativeFilter;

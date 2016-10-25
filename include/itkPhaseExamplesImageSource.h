@@ -92,8 +92,7 @@ protected:
 
 private:
 
-  PhaseExamplesImageSource(const Self &); //purposely not implemented
-  void operator=(const Self &);  //purposely not implemented
+  ITK_DISALLOW_COPY_AND_ASSIGN(PhaseExamplesImageSource);
   
   /** Declare component filter types */
   typedef ImageRegionIteratorWithIndex< TImage >        ItType;

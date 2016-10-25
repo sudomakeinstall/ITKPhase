@@ -78,8 +78,7 @@ protected:
  
 private:
 
-  PCGPhaseUnwrappingImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);  //purposely not implemented
+  ITK_DISALLOW_COPY_AND_ASSIGN(PCGPhaseUnwrappingImageFilter);
   
   typename LaplacianType::Pointer m_Laplacian;
   typename QualType::Pointer      m_Qual;

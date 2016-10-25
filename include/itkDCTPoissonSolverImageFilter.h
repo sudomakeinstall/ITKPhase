@@ -85,8 +85,7 @@ protected:
 
 private:
 
-  DCTPoissonSolverImageFilter(Self&); // intentionally not implemented
-  void operator=(const Self&); // intentionally not implemented
+  ITK_DISALLOW_COPY_AND_ASSIGN(DCTPoissonSolverImageFilter);
   
   // Component filter types
   typedef itk::DCTImageFilter< TInputImage > DCTType;

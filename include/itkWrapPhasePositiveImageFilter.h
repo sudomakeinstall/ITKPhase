@@ -74,12 +74,14 @@ public:
   #endif
 
 protected:
+
   WrapPhasePositiveImageFilter() {}
   virtual ~WrapPhasePositiveImageFilter() {}
 
 private:
-  WrapPhasePositiveImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);   //purposely not implemented
+
+  ITK_DISALLOW_COPY_AND_ASSIGN(WrapPhasePositiveImageFilter);
+
 };
 } // end namespace itk
 

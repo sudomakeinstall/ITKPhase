@@ -109,8 +109,7 @@ protected:
 
 private: 
 
-  DCTImageFilter(Self&); // intentionally not implemented 
-  void operator=(const Self&); // intentionally not implemented 
+  ITK_DISALLOW_COPY_AND_ASSIGN(DCTImageFilter);
 
 //  Component filters are declared as data members, all using the smart 
 //  pointer types.

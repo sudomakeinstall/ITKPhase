@@ -96,8 +96,7 @@ protected:
  
 private:
 
-  WrappedPhaseDifferencesBaseImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);  //purposely not implemented
+  ITK_DISALLOW_COPY_AND_ASSIGN(WrappedPhaseDifferencesBaseImageFilter);
 
 };
 

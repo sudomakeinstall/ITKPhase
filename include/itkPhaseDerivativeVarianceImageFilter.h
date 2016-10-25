@@ -116,8 +116,7 @@ protected:
  
 private:
 
-  PhaseDerivativeVarianceImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);  //purposely not implemented
+  ITK_DISALLOW_COPY_AND_ASSIGN(PhaseDerivativeVarianceImageFilter);
 
 //  typename MultiplyType::Pointer m_Negative;
 //  typename RescaleType::Pointer m_Rescale;
