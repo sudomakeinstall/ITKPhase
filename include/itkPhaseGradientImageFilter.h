@@ -75,22 +75,26 @@ protected:
   ~PhaseGradientImageFilter(){}
 
   typedef Image< bool, TInputImage::ImageDimension > TLogicalImage;
-  typedef typename TInputImage::PixelType TInputPixel;
+  typedef typename TInputImage::PixelType            TInputPixel;
+
   typedef GradientImageFilter< TInputImage,
                                TInputPixel,
                                TInputPixel,
-                               TOutputImage > TGradient;
+                               TOutputImage >                     TGradient;
+
   typedef VectorMagnitudeImageFilter< TOutputImage, TInputImage > TMagnitude;
   typedef AddImageFilter< TInputImage >                           TAdd;
   typedef WrapPhaseSymmetricImageFilter< TInputImage >            TWrap;
   typedef Functor::Less< TInputPixel, TInputPixel, bool >         TLessFunctor;
+
   typedef BinaryFunctorImageFilter< TInputImage,
                                     TInputImage,
                                     TLogicalImage,
                                     TLessFunctor > TMinMask;
+
   typedef TernaryOperatorImageFilter< TLogicalImage, TOutputImage > TChoose;
 
-  virtual void GenerateData() ITK_OVERRIDE;
+  void GenerateData() ITK_OVERRIDE;
  
 private:
 
