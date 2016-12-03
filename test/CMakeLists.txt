@@ -19,6 +19,8 @@ Set(ITK${itk-module}Tests
   itkWrapPhasePositiveFunctorTest.cxx
   itkWrapPhaseSymmetricImageFilterTest.cxx
   itkWrapPhasePositiveImageFilterTest.cxx
+  itkPhaseMeanImageFilterTest.cxx
+  itkPhaseMedianImageFilterTest.cxx
 )
 
 CreateTestDriver(${itk-module}  "${${itk-module}-Test_LIBRARIES}" "${ITK${itk-module}Tests}")
@@ -53,3 +55,7 @@ itk_add_test(NAME itkWrapPhaseSymmetricImageFilterTest
   COMMAND ${itk-module}TestDriver itkWrapPhaseSymmetricImageFilterTest )
 itk_add_test(NAME itkWrapPhasePositiveImageFilterTest
   COMMAND ${itk-module}TestDriver itkWrapPhasePositiveImageFilterTest )
+itk_add_test(NAME itkPhaseMeanImageFilterTest
+  COMMAND ${itk-module}TestDriver itkPhaseMeanImageFilterTest )
+itk_add_test(NAME itkPhaseMedianImageFilterTest
+  COMMAND ${itk-module}TestDriver itkPhaseMedianImageFilterTest )
