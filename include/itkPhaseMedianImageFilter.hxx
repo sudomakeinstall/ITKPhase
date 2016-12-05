@@ -18,6 +18,8 @@
 #ifndef itkPhaseMedianImageFilter_hxx
 #define itkPhaseMedianImageFilter_hxx
 
+#include "itkPhaseMedianImageFilter.h"
+
 namespace itk
 {
 

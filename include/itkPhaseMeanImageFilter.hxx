@@ -18,6 +18,8 @@
 #ifndef itkPhaseMeanImageFilter_hxx
 #define itkPhaseMeanImageFilter_hxx
 
+#include "itkPhaseMeanImageFilter.h"
+
 namespace itk
 {
 /** \class PhaseMeanImageFilter

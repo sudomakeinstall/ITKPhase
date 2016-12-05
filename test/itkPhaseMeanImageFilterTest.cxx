@@ -15,7 +15,7 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include "itkTestIngMacros.h"
+#include "itkTestingMacros.h"
 
 #include "itkPhaseMeanImageFilter.h"
 
